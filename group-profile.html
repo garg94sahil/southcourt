@@ -963,8 +963,10 @@
   ];
 
   const SLIDE_CYCLE_MS = DURATIONS.reduce((a, b) => a + b, 0); // 122 000 ms
-  const VIDEO_URL      = 'https://garg94sahil.github.io/Southcourtreception/';
-  const VIDEO_MS       = 75000;   // reception video length
+  const VIDEO_URL      = window.location.hostname === 'localhost'
+    ? 'http://localhost:3000/'
+    : 'https://garg94sahil.github.io/Southcourtreception/';
+  const VIDEO_MS       = 16000;   // Delhi video length (fallback)
   const FADE_MS        = 1200;    // crossfade duration
 
   let slideHandle = null;
@@ -987,21 +989,29 @@
   function showVideo() {
     videoActive = true;
     if (slideHandle) { clearTimeout(slideHandle); slideHandle = null; }
+    if (modeHandle)  { clearTimeout(modeHandle);  modeHandle  = null; }
 
     const overlay = document.getElementById('video-overlay');
     const frame   = document.getElementById('video-frame');
     frame.src = VIDEO_URL;
     overlay.style.display = 'block';
-    // Trigger reflow so transition fires
     void overlay.offsetHeight;
     overlay.style.transition = 'opacity ' + (FADE_MS / 1000) + 's ease';
     overlay.style.opacity = '1';
 
+    // Fallback timer in case videoEnded message never arrives
     modeHandle = setTimeout(hideVideo, VIDEO_MS);
   }
 
   // ── Hide video, return to slides ──────────────────────
   function hideVideo() {
+    if (!videoActive) return;
+    if (modeHandle) { clearTimeout(modeHandle); modeHandle = null; }
+
+    // Reset to slide 1 BEFORE fade so it's visible underneath as overlay fades
+    const stage = document.querySelector('deck-stage');
+    if (stage) { stage.goTo(0); }
+
     const overlay = document.getElementById('video-overlay');
     overlay.style.transition = 'opacity ' + (FADE_MS / 1000) + 's ease';
     overlay.style.opacity = '0';
@@ -1011,14 +1021,17 @@
       document.getElementById('video-frame').src = '';
       videoActive = false;
 
-      const stage = document.querySelector('deck-stage');
-      if (stage) {
-        stage.goTo(0);
-        scheduleNext(stage, 0);
-      }
+      if (stage) { scheduleNext(stage, 0); }
       modeHandle = setTimeout(showVideo, SLIDE_CYCLE_MS);
     }, FADE_MS);
   }
+
+  // ── Listen for video-ended signal from iframe ─────────
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'videoEnded' && videoActive) {
+      hideVideo();
+    }
+  });
 
   // ── Boot ──────────────────────────────────────────────
   customElements.whenDefined('deck-stage').then(function() {
@@ -1033,20 +1046,5 @@
 })();
 </script>
 
-<audio id="bg-music" autoplay loop preload="auto">
-  <source src="assets/fur-elise.ogg" type="audio/ogg">
-</audio>
-<script>
-(function(){
-  var a = document.getElementById('bg-music');
-  a.volume = 0.25;
-  function play(){ a.play().catch(function(){}); }
-  play();
-  setInterval(function(){ if(a.paused) play(); }, 2000);
-  document.addEventListener('click', play);
-  document.addEventListener('keydown', play);
-  document.addEventListener('touchstart', play);
-})();
-</script>
 </body>
 </html>
