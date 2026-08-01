@@ -201,6 +201,25 @@
   .mo-pipeline .row .stage.live{color:#1F8A5B}
   .mo-pipeline .row .stage.inprog{color:#B35C00}
 
+  /* ---------- Location Spotlight ---------- */
+  .s-loc{background:var(--paper)}
+  .loc-head{position:absolute;left:80px;top:72px;right:80px}
+  .loc-head .eye{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--mitti);font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:14px}
+  .loc-head .eye .pill{padding:6px 14px;border:1px solid var(--mitti);color:var(--mitti);border-radius:999px;font-size:11px;letter-spacing:.22em}
+  .loc-head h1{font-family:'Oswald';font-weight:400;font-size:78px;line-height:.9;color:var(--ink);letter-spacing:-.01em}
+  .loc-head h1 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--mitti);text-transform:none}
+  .loc-head .sub{font-family:'Fraunces';font-style:italic;font-size:24px;color:rgba(14,14,16,.65);margin-top:20px;max-width:1400px;line-height:1.32}
+  .loc-facts{margin-top:28px;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);max-width:1760px}
+  .loc-facts .cell{padding:16px 24px 0 0}
+  .loc-facts .k{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(14,14,16,.5);font-weight:500}
+  .loc-facts .v{font-family:'Inter';font-size:17px;color:var(--ink);font-weight:500;margin-top:8px}
+  .loc-media{position:absolute;left:80px;right:80px;top:452px;bottom:140px;border-radius:6px;overflow:hidden;box-shadow:0 24px 60px -20px rgba(90,10,45,.35),0 8px 20px -10px rgba(14,14,16,.3)}
+  .loc-media .loc-photo-img{width:100%;height:100%;object-fit:cover;object-position:center 32%;display:block}
+  .loc-media::after{content:'';position:absolute;inset:0;background:linear-gradient(to top, rgba(14,14,16,.55), transparent 34%);pointer-events:none}
+  .loc-media .loc-tag{position:absolute;left:32px;bottom:28px;z-index:2;padding:8px 16px;border-radius:999px;background:var(--mitti);color:#fff;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600}
+  .loc-media .loc-map-inset{position:absolute;right:32px;bottom:28px;width:190px;height:150px;border-radius:6px;overflow:hidden;border:2px solid #fff;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);z-index:2}
+  .loc-media .loc-map-inset img{width:100%;height:100%;object-fit:cover;display:block}
+
   /* ---------- Zoom ---------- */
   .s-zoom{background:var(--paper-2);overflow:hidden}
   .zoom-bg{position:absolute;inset:0;background:
@@ -348,7 +367,7 @@
     </div>
   </div>
 
-  <div class="cover-pageno reveal" style="--d:2200ms">01 / 10 — Cover</div>
+  <div class="cover-pageno reveal" style="--d:2200ms">01 / 11 — Cover</div>
 </section>
 
 <!-- ============== 2 GLANCE ============== -->
@@ -721,14 +740,54 @@
   </div>
 </section>
 
-<!-- ============== 8 ORG ============== -->
-<section class="slide s-org" data-screen-label="08 Structure">
+<!-- ============== 8 LOCATION SPOTLIGHT ============== -->
+<section class="slide s-loc" data-screen-label="08 Location">
   <div class="frame fade" style="--d:200ms"></div>
   <div class="topbar">
     <div class="left reveal" style="--d:300ms">
       <img src="assets/haus-symbol-mitti.png" class="symbol" alt="">
     </div>
-    <div class="reveal" style="--d:400ms">08 — Group Structure</div>
+    <div class="reveal" style="--d:400ms">08 — Location Spotlight</div>
+  </div>
+  <div class="footbar">
+    <div class="reveal" style="--d:600ms">Premium serviced workspaces · Pan-India pipeline</div>
+    <div class="reveal" style="--d:600ms"></div>
+  </div>
+
+  <div class="loc-head">
+    <div class="eye reveal" style="--d:300ms">
+      <span class="pill">04 — Workspaces</span>
+      <span>Coming Up Next</span>
+    </div>
+    <h1>
+      <span class="reveal" style="--d:500ms">Our next address,</span>
+      <em class="reveal" style="--d:800ms">in the heart of the city.</em>
+    </h1>
+    <div class="sub reveal" style="--d:1100ms">Salcon Rasvilas, Saket — one of South Delhi's most connected micro-markets, minutes from Select Citywalk</div>
+    <div class="loc-facts">
+      <div class="cell reveal" style="--d:1300ms"><div class="k">Micro-market</div><div class="v">Saket District Centre</div></div>
+      <div class="cell reveal" style="--d:1380ms"><div class="k">Neighbours</div><div class="v">Select Citywalk · DLF Avenue</div></div>
+      <div class="cell reveal" style="--d:1460ms"><div class="k">Landmarks</div><div class="v">Max Hospital · PVR Saket</div></div>
+      <div class="cell reveal" style="--d:1540ms"><div class="k">Connectivity</div><div class="v">Saket &amp; Malviya Nagar Metro</div></div>
+      <div class="cell reveal" style="--d:1620ms"><div class="k">Status</div><div class="v">Phased roll-out · Nov 2026</div></div>
+    </div>
+  </div>
+
+  <div class="loc-media reveal" style="--d:1800ms">
+    <img class="loc-photo-img" src="assets/salcon-rasvilas.png" alt="Salcon Rasvilas, Saket">
+    <span class="loc-tag">Saket, New Delhi</span>
+    <div class="loc-map-inset"><img src="assets/salcon-rasvilas-map.png" alt="Salcon Rasvilas location map"></div>
+  </div>
+</section>
+
+<!-- ============== 9 ORG ============== -->
+<section class="slide s-org" data-screen-label="09 Structure">
+  <div class="frame fade" style="--d:200ms"></div>
+  <div class="topbar">
+    <div class="left reveal" style="--d:300ms">
+      <img src="assets/haus-symbol-mitti.png" class="symbol" alt="">
+    </div>
+    <div class="reveal" style="--d:400ms">09 — Group Structure</div>
   </div>
   <div class="footbar">
     <div class="reveal" style="--d:600ms">Family-owned · Professionally run</div>
@@ -789,13 +848,13 @@
 </section>
 
 <!-- ============== 10 WHY ============== -->
-<section class="slide s-why" data-screen-label="09 Why Us">
+<section class="slide s-why" data-screen-label="10 Why Us">
   <div class="frame dark fade" style="--d:200ms"></div>
   <div class="topbar dark">
     <div class="left reveal" style="--d:300ms">
       <img src="assets/haus-symbol-white.png" class="symbol" alt="">
     </div>
-    <div class="reveal" style="--d:400ms">09 — Why Us?</div>
+    <div class="reveal" style="--d:400ms">10 — Why Us?</div>
   </div>
   <div class="footbar dark">
     <div class="reveal" style="--d:600ms"></div>
@@ -836,10 +895,10 @@
 </section>
 
 <!-- ============== 11 CONTACT ============== -->
-<section class="slide s-contact" data-screen-label="10 Contact">
+<section class="slide s-contact" data-screen-label="11 Contact">
   <div class="frame fade" style="--d:200ms"></div>
   <div class="topbar" style="left:auto;right:80px;width:auto">
-    <div class="reveal" style="--d:400ms">10 — Contact &amp; Next Steps</div>
+    <div class="reveal" style="--d:400ms">11 — Contact &amp; Next Steps</div>
   </div>
 
   <div class="reveal" style="--d:300ms;position:absolute;left:80px;top:72px;display:flex;align-items:center;gap:44px">
@@ -943,12 +1002,13 @@
     12000, // 05 Endurance
     12000, // 06 Genesis
     14000, // 07 Managed Offices
-    12000, // 08 Structure
-    12000, // 09 Why
-    10000, // 10 Contact
+    13000, // 08 Location Spotlight
+    12000, // 09 Structure
+    12000, // 10 Why
+    10000, // 11 Contact
   ];
 
-  const SLIDE_CYCLE_MS = DURATIONS.reduce((a, b) => a + b, 0); // 122 000 ms
+  const SLIDE_CYCLE_MS = DURATIONS.reduce((a, b) => a + b, 0);
   const VIDEO_URL      = window.location.hostname === 'localhost'
     ? 'http://localhost:3000/'
     : 'index.html';
