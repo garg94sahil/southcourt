@@ -220,6 +220,47 @@
   .loc-media .loc-map-inset{position:absolute;right:32px;bottom:28px;width:190px;height:150px;border-radius:6px;overflow:hidden;border:2px solid #fff;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);z-index:2}
   .loc-media .loc-map-inset img{width:100%;height:100%;object-fit:cover;display:block}
 
+  /* ---------- Calangute / Goa (new format) ---------- */
+  .s-goa-1, .s-goa-2{
+    --goa-ink:#1C130A;
+    --goa-cream:#F5EAD6;
+    --goa-terracotta:#C1592B;
+    --goa-teal:#123F38;
+    --goa-gold:#D9AE68;
+    --goa-palm:#5B7A43;
+    background:#0A0806;
+    overflow:hidden;
+  }
+  .goa-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1);transform-origin:56% 48%}
+  .slide[data-active] .goa-bg{animation:goaKenBurns 16000ms cubic-bezier(.25,.1,.25,1) forwards}
+  @keyframes goaKenBurns{from{transform:scale(1)}to{transform:scale(1.1)}}
+  .goa-scrim{position:absolute;inset:0;pointer-events:none;background:
+    linear-gradient(to top, rgba(9,6,3,.88) 0%, rgba(9,6,3,.28) 40%, rgba(9,6,3,.1) 60%, rgba(9,6,3,.5) 100%),
+    linear-gradient(to right, rgba(9,6,3,.4), transparent 50%)}
+  .goa-tint{position:absolute;inset:0;pointer-events:none;background:var(--goa-terracotta);opacity:.12;mix-blend-mode:multiply}
+  .goa-grain{position:absolute;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .goa-eyebrow{position:absolute;left:80px;top:150px;right:80px;display:flex;align-items:center;gap:16px;z-index:2}
+  .goa-eyebrow .pill{padding:9px 20px;border:1px solid rgba(245,234,214,.5);border-radius:999px;font-family:'Inter';font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--goa-cream);font-weight:600;background:rgba(20,14,8,.28);backdrop-filter:blur(8px)}
+  .goa-eyebrow .tag{font-family:'Inter';font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--goa-gold);font-weight:600}
+  .goa-head{position:absolute;left:80px;right:80px;top:238px;z-index:2}
+  .goa-head h1{font-family:'Fraunces';font-weight:400;font-size:104px;line-height:.98;color:var(--goa-cream);letter-spacing:-.01em}
+  .goa-head h1 em{font-style:italic;font-weight:300;color:var(--goa-gold);display:block;margin-top:2px}
+  .goa-head .sub{margin-top:30px;font-family:'Inter';font-weight:300;font-size:21px;line-height:1.6;color:rgba(245,234,214,.85);max-width:860px}
+  .goa-facts{position:absolute;left:80px;right:80px;bottom:150px;display:flex;gap:14px;z-index:2;flex-wrap:wrap}
+  .goa-facts .chip{padding:16px 22px;border-radius:12px;background:rgba(20,14,8,.38);backdrop-filter:blur(10px);border:1px solid rgba(245,234,214,.16);min-width:210px}
+  .goa-facts .chip .k{font-family:'Inter';font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(245,234,214,.55);font-weight:600}
+  .goa-facts .chip .v{font-family:'Inter';font-size:16px;color:var(--goa-cream);font-weight:500;margin-top:7px}
+  .goa-inset{position:absolute;right:80px;bottom:150px;width:360px;height:230px;border-radius:10px;overflow:hidden;border:3px solid rgba(245,234,214,.9);box-shadow:0 24px 55px -16px rgba(0,0,0,.65);z-index:2}
+  .goa-inset img{width:100%;height:100%;object-fit:cover;display:block}
+  .goa-inset .cap{position:absolute;left:0;right:0;bottom:0;padding:9px 14px;background:rgba(9,6,3,.6);font-family:'Inter';font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--goa-cream);font-weight:600}
+  .goa-palette{position:absolute;left:80px;bottom:150px;right:480px;z-index:2}
+  .goa-palette .group-label{font-family:'Inter';font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(245,234,214,.55);font-weight:600;margin-bottom:14px}
+  .goa-swatch-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}
+  .goa-swatch-row:last-child{margin-bottom:0}
+  .goa-chip{display:flex;align-items:center;gap:10px;padding:9px 18px 9px 10px;border-radius:999px;background:rgba(20,14,8,.38);backdrop-filter:blur(10px);border:1px solid rgba(245,234,214,.16)}
+  .goa-chip .dot{width:17px;height:17px;border-radius:50%;flex:none;border:1px solid rgba(255,255,255,.35)}
+  .goa-chip span{font-family:'Inter';font-size:13px;color:var(--goa-cream);font-weight:500;white-space:nowrap}
+
   /* ---------- Zoom ---------- */
   .s-zoom{background:var(--paper-2);overflow:hidden}
   .zoom-bg{position:absolute;inset:0;background:
@@ -312,6 +353,8 @@
 
 <script type="application/json" id="speaker-notes">
 [
+  "Calangute reveal — the upcoming AC Hotels by Marriott at Calangute, Goa, a Saga Hotels property. Landscape design built on five elements: earth, water, fire, air and space.",
+  "Calangute landscape language — the material and planting palette behind the design: grey andesite, terracotta and teak, set against olive trees, palms and frangipani.",
   "Cover slide. Diversified family-owned group with four operating platforms across hospitality, public-market investing, lending, and managed offices.",
   "Group at a glance — 35+ years of operating history, ~₹450 Cr combined AUM across Genesis and Endurance, hospitality assets in three destinations, and a managed offices pipeline approaching half a million square feet.",
   "Four platforms, one family. Saga Hotels, Endurance Capital, Genesis Finance, and the upcoming Managed Offices platform.",
@@ -319,11 +362,107 @@
   "Endurance Capital — the group's public markets investment platform, operating as an AIF with approximately ₹250 Cr AUM, focused on quality businesses, capital preservation, and compounding returns.",
   "Genesis Finance — NBFC since 1989, over three decades of operating history, ~₹250 Cr AUM, built on relationship-led credit and prudent underwriting.",
   "The upcoming Managed Offices platform — premium serviced workspaces across Noida, Bengaluru, Aerocity Delhi, BKC and Lower Parel Mumbai. Built with an institutional operating model.",
+  "Location spotlight — Salcon Rasvilas, Saket, the first Managed Offices site, inside South Delhi's Select Citywalk neighbourhood, phased roll-out from November 2026.",
   "Group structure — one family, four operating platforms. All operating companies are professionally run with clear governance.",
   "Why this group is a confident counterparty — three decades of operating history, regulated entities, institutional capital strength, and skin in the game.",
   "Contact details for the group and the principals."
 ]
 </script>
+
+<!-- ============== 0A CALANGUTE — REVEAL ============== -->
+<section class="slide s-goa-1" data-screen-label="Calangute — Reveal">
+  <img class="goa-bg" src="assets/calangute-front.jpg" alt="AC Hotels by Marriott, Calangute — front view at dusk">
+  <div class="goa-scrim"></div>
+  <div class="goa-tint"></div>
+  <div class="goa-grain"></div>
+  <div class="frame dark fade" style="--d:200ms"></div>
+  <div class="topbar dark">
+    <div class="left reveal" style="--d:300ms">
+      <img src="assets/haus-symbol-white.png" class="symbol" alt="">
+    </div>
+    <div class="reveal" style="--d:400ms">Saga Hotels · Calangute</div>
+  </div>
+  <div class="footbar dark">
+    <div class="reveal" style="--d:600ms">Landscape design in progress</div>
+    <div class="reveal" style="--d:600ms">Goa, India</div>
+  </div>
+
+  <div class="goa-eyebrow">
+    <span class="pill reveal" style="--d:500ms">Saga Hotels · Upcoming</span>
+    <span class="tag reveal" style="--d:650ms">AC Hotels by Marriott</span>
+  </div>
+
+  <div class="goa-head">
+    <h1>
+      <span class="reveal" style="--d:800ms">Five elements.</span>
+      <em class="reveal" style="--d:1100ms">One Calangute address.</em>
+    </h1>
+    <div class="sub reveal" style="--d:1400ms">AC Hotels by Marriott, Calangute — a landscape-led arrival on North Goa's most iconic stretch of sand, designed around earth, water, fire, air and space.</div>
+  </div>
+
+  <div class="goa-facts">
+    <div class="chip reveal" style="--d:1700ms"><div class="k">Location</div><div class="v">Calangute, North Goa</div></div>
+    <div class="chip reveal" style="--d:1800ms"><div class="k">Brand Partner</div><div class="v">AC Hotels by Marriott</div></div>
+    <div class="chip reveal" style="--d:1900ms"><div class="k">Design Language</div><div class="v">Earth · Water · Fire · Air · Space</div></div>
+    <div class="chip reveal" style="--d:2000ms"><div class="k">Status</div><div class="v">In Design Development</div></div>
+  </div>
+</section>
+
+<!-- ============== 0B CALANGUTE — LANDSCAPE LANGUAGE ============== -->
+<section class="slide s-goa-2" data-screen-label="Calangute — Landscape">
+  <img class="goa-bg" src="assets/calangute-pool.jpg" alt="AC Hotels by Marriott, Calangute — rooftop pool view">
+  <div class="goa-scrim"></div>
+  <div class="goa-tint"></div>
+  <div class="goa-grain"></div>
+  <div class="frame dark fade" style="--d:200ms"></div>
+  <div class="topbar dark">
+    <div class="left reveal" style="--d:300ms">
+      <img src="assets/haus-symbol-white.png" class="symbol" alt="">
+    </div>
+    <div class="reveal" style="--d:400ms">Saga Hotels · Calangute</div>
+  </div>
+  <div class="footbar dark">
+    <div class="reveal" style="--d:600ms">Landscape design in progress</div>
+    <div class="reveal" style="--d:600ms">Goa, India</div>
+  </div>
+
+  <div class="goa-eyebrow">
+    <span class="pill reveal" style="--d:500ms">Landscape Language</span>
+  </div>
+
+  <div class="goa-head">
+    <h1>
+      <span class="reveal" style="--d:800ms">Built from</span>
+      <em class="reveal" style="--d:1100ms">the island itself.</em>
+    </h1>
+    <div class="sub reveal" style="--d:1400ms">Grey andesite, warm teak and brass — grounded by a planting palette native to the coast.</div>
+  </div>
+
+  <div class="goa-palette">
+    <div class="group-label reveal" style="--d:1600ms">Materials</div>
+    <div class="goa-swatch-row">
+      <div class="goa-chip reveal" style="--d:1650ms"><span class="dot" style="background:#8B8580"></span><span>Grey Andesite</span></div>
+      <div class="goa-chip reveal" style="--d:1700ms"><span class="dot" style="background:#B5551F"></span><span>Terracotta</span></div>
+      <div class="goa-chip reveal" style="--d:1750ms"><span class="dot" style="background:#8C6A3F"></span><span>Bronze Metal</span></div>
+      <div class="goa-chip reveal" style="--d:1800ms"><span class="dot" style="background:#5A3A22"></span><span>Teak Deck</span></div>
+      <div class="goa-chip reveal" style="--d:1850ms"><span class="dot" style="background:#2F6F7A"></span><span>Blue Tile</span></div>
+      <div class="goa-chip reveal" style="--d:1900ms"><span class="dot" style="background:#1C1C1C"></span><span>Black Granite</span></div>
+    </div>
+    <div class="group-label reveal" style="--d:1950ms">Signature Planting</div>
+    <div class="goa-swatch-row">
+      <div class="goa-chip reveal" style="--d:2000ms"><span class="dot" style="background:#5B7A43"></span><span>Olive Tree</span></div>
+      <div class="goa-chip reveal" style="--d:2050ms"><span class="dot" style="background:#5B7A43"></span><span>MacArthur Palm</span></div>
+      <div class="goa-chip reveal" style="--d:2100ms"><span class="dot" style="background:#5B7A43"></span><span>Frangipani</span></div>
+      <div class="goa-chip reveal" style="--d:2150ms"><span class="dot" style="background:#5B7A43"></span><span>Orange Jasmine</span></div>
+      <div class="goa-chip reveal" style="--d:2200ms"><span class="dot" style="background:#5B7A43"></span><span>Beach Spider Lily</span></div>
+    </div>
+  </div>
+
+  <div class="goa-inset reveal" style="--d:1300ms">
+    <img src="assets/calangute-lobby.jpg" alt="AC Hotels by Marriott, Calangute — lobby view">
+    <div class="cap">Lobby View</div>
+  </div>
+</section>
 
 <!-- ============== 1 COVER ============== -->
 <section class="slide s-cover" data-screen-label="01 Cover">
@@ -995,6 +1134,8 @@
    then fades back to the slide deck from slide 1, and repeats. */
 (function(){
   const DURATIONS = [
+    16000, // 00a Calangute — Reveal (plays right after the welcome video)
+    16000, // 00b Calangute — Landscape Language
     12000, // 01 Cover
     12000, // 02 Glance
     14000, // 03 Platforms
