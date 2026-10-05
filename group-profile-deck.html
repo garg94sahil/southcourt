@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Group Profile — Saga · Endurance · Genesis · Managed Offices</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="deck.css">
+<script src="assets/deck-stage.js"></script>
+<style>
+  /* ---------- Cover ---------- */
+  .s-cover{background:#fff}
+  .s-cover .gridlines{position:absolute;inset:0;
+    background-image:linear-gradient(to right, rgba(90,10,45,.05) 1px, transparent 1px),
+                     linear-gradient(to bottom, rgba(90,10,45,.05) 1px, transparent 1px);
+    background-size:120px 120px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 60%, black 40%, transparent 100%);
+  }
+  .cover-mark{position:absolute;left:80px;top:80px;display:flex;align-items:center;gap:18px}
+  .cover-mark img{height:54px}
+  .cover-meta{position:absolute;right:80px;top:80px;text-align:right;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(14,14,16,.55);line-height:1.9;font-weight:500}
+  .cover-meta strong{color:var(--mitti);font-weight:600}
+  .cover-stack{position:absolute;left:80px;right:80px;top:50%;transform:translateY(-50%)}
+  .cover-eyebrow{font-size:13px;letter-spacing:.32em;text-transform:uppercase;color:var(--mitti);font-weight:600;margin-bottom:48px;display:flex;align-items:center;gap:18px}
+  .cover-eyebrow .bar{height:1px;width:80px;background:var(--mitti);transform-origin:left}
+  .cover-title{font-family:'Oswald';font-weight:400;font-size:230px;line-height:.84;color:var(--mitti);letter-spacing:-.012em}
+  .cover-title em{font-family:'Fraunces';font-style:italic;font-weight:300;text-transform:none;color:var(--ink);letter-spacing:-.02em;font-size:200px;display:inline-block;transform:translateY(8px)}
+  .cover-sub{margin-top:56px;font-family:'Fraunces';font-style:italic;font-weight:300;font-size:32px;color:rgba(14,14,16,.7);max-width:1300px;line-height:1.32}
+  .cover-foot{position:absolute;left:80px;bottom:80px;display:flex;gap:14px;align-items:center;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(14,14,16,.55);font-weight:500;flex-wrap:wrap}
+  .cover-foot .chip{padding:10px 18px;border:1px solid var(--line);border-radius:999px;display:flex;align-items:center;gap:10px}
+  .cover-foot .chip .dot{width:6px;height:6px;border-radius:50%;background:var(--mitti)}
+  .cover-pageno{display:none}
+  /* Snap animated elements to initial state before re-playing animations */
+  .slide.entering .reveal,.slide.entering .rise,.slide.entering .fade,
+  .slide.entering .fade-fast,.slide.entering .grow,.slide.entering .grow-y,
+  .slide.entering .clip-up,.slide.entering .clip-r,.slide.entering .zoom-in,
+  .slide.entering .slide-r,.slide.entering .letters > span > b,.slide.entering .draw{
+    transition:none!important;animation:none!important;
+  }
+
+  /* ---------- Glance ---------- */
+  .s-glance{background:var(--paper)}
+  .glance-head{position:absolute;left:80px;top:200px;right:80px}
+  .glance-head .eye{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--mitti);font-weight:600;margin-bottom:24px}
+  .glance-head h1{font-family:'Oswald';font-weight:400;font-size:130px;line-height:.92;color:var(--ink);letter-spacing:-.01em}
+  .glance-head h1 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--mitti);text-transform:none}
+  .glance-stats{position:absolute;left:80px;right:80px;bottom:200px;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+  .glance-stats .cell{padding:48px 32px 0 0;border-right:1px solid var(--line);min-height:280px;position:relative}
+  .glance-stats .cell:last-child{border-right:none}
+  .glance-stats .label{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:rgba(14,14,16,.5);font-weight:500}
+  .glance-stats .num{font-family:'Oswald';font-weight:400;font-size:130px;color:var(--mitti);line-height:1;margin-top:36px;letter-spacing:-.02em}
+  .glance-stats .num small{font-size:48px;color:var(--ink);font-weight:300}
+  .glance-stats .num em{font-family:'Fraunces';font-style:italic;font-weight:300;font-size:50px;color:var(--ink);text-transform:none}
+  .glance-stats .desc{position:absolute;left:0;bottom:0;font-family:'Fraunces';font-style:italic;font-size:19px;color:rgba(14,14,16,.7);font-weight:300;line-height:1.3;max-width:300px}
+
+  /* ---------- Platforms grid ---------- */
+  .s-platforms{background:#fff}
+  .pl-head{position:absolute;left:80px;top:160px;right:80px;display:flex;justify-content:space-between;align-items:flex-end}
+  .pl-head h1{font-family:'Oswald';font-weight:400;font-size:110px;line-height:.92;color:var(--mitti)}
+  .pl-head h1 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--ink);text-transform:none}
+  .pl-head .meta{text-align:right;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:rgba(14,14,16,.5);line-height:2;font-weight:500}
+  .pl-grid{position:absolute;left:80px;right:80px;bottom:140px;top:440px;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+  .pl{padding:36px 24px;border-left:1px solid var(--line);position:relative;display:flex;flex-direction:column;height:100%}
+  .pl:first-child{border-left:none}
+  .pl .badge{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--mitti);font-weight:600;display:flex;align-items:center;gap:10px}
+  .pl .badge .dot{width:6px;height:6px;background:var(--mitti);border-radius:50%}
+  .pl h3{font-family:'Oswald';font-weight:500;font-size:38px;color:var(--ink);line-height:1;margin-top:28px}
+  .pl h3 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--mitti);text-transform:none;font-size:32px}
+  .pl .since{font-family:'Fraunces';font-style:italic;font-size:18px;color:rgba(14,14,16,.55);margin-top:10px}
+  .pl .desc{font-family:'Inter';font-size:14px;line-height:1.55;color:var(--ink-2);margin-top:24px}
+  .pl .tags{margin-top:auto;padding-top:24px;display:flex;flex-direction:column;gap:6px;font-size:11px;color:rgba(14,14,16,.6)}
+  .pl .tags .row{display:flex;justify-content:space-between;border-top:1px solid var(--line-2);padding-top:6px;gap:10px}
+  .pl .tags .row span:first-child{color:rgba(14,14,16,.45);text-transform:uppercase;letter-spacing:.18em;font-weight:500}
+  .pl .tags .row span:last-child{font-weight:500;color:var(--ink);text-align:right}
+
+  /* ---------- Saga Hotels ---------- */
+  .s-saga{background:var(--paper)}
+  .saga-grid{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1.1fr}
+  .saga-left{padding:200px 60px 140px 80px;position:relative;display:flex;flex-direction:column}
+  .saga-left .tag{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--mitti);font-weight:600;margin-bottom:24px;display:flex;align-items:center;gap:14px}
+  .saga-left .tag .pill{padding:6px 14px;border:1px solid var(--mitti);color:var(--mitti);border-radius:999px;font-size:11px;letter-spacing:.22em}
+  .saga-left h2{font-family:'Oswald';font-weight:400;font-size:130px;line-height:.86;color:var(--ink);letter-spacing:-.01em}
+  .saga-left h2 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--mitti);text-transform:none}
+  .saga-left .lede{font-family:'Fraunces';font-style:italic;font-weight:300;font-size:26px;color:rgba(14,14,16,.72);line-height:1.32;margin-top:36px;max-width:700px}
+  .saga-left .body{margin-top:30px;font-size:17px;line-height:1.6;color:var(--ink-2);max-width:700px}
+  .saga-left .partners{margin-top:auto;padding-top:36px;display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+  .saga-left .partners .row{display:grid;grid-template-columns:160px 1fr;padding:12px 0;border-bottom:1px solid var(--line);align-items:center;gap:18px}
+  .saga-left .partners .row .k{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(14,14,16,.5);font-weight:500}
+  .saga-left .partners .row .v{font-family:'Inter';font-size:17px;color:var(--ink);font-weight:500}
+  .saga-right{position:relative;background:var(--mitti);overflow:hidden;color:#fff}
+  .saga-right::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 1000px 700px at 80% 30%, rgba(130,180,255,.12), transparent 70%)}
+  .saga-pull{position:absolute;left:60px;right:60px;top:160px}
+  .saga-pull .badge{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--indigo);font-weight:600;margin-bottom:24px}
+  .saga-pull h3{font-family:'Oswald';font-weight:400;font-size:80px;color:#fff;line-height:.92}
+  .saga-pull h3 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--indigo);text-transform:none}
+  .portfolio-list{position:absolute;left:60px;right:60px;bottom:140px;display:flex;flex-direction:column;gap:0}
+  .portfolio-list .head{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:18px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:10px;display:grid;grid-template-columns:60px 1fr 1.6fr;gap:24px}
+  .portfolio-list .row{display:grid;grid-template-columns:60px 1fr 1.6fr;align-items:flex-start;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.18);font-family:'Inter';gap:24px}
+  .portfolio-list .row .n{font-size:11px;letter-spacing:.2em;color:rgba(255,255,255,.5);font-weight:500;padding-top:6px}
+  .portfolio-list .row .loc{font-family:'Oswald';font-weight:500;font-size:34px;color:#fff;text-transform:uppercase;letter-spacing:.02em;line-height:1}
+  .portfolio-list .row .loc small{display:block;font-family:'Inter';font-weight:400;font-size:13px;color:var(--indigo);margin-top:8px;letter-spacing:.18em;text-transform:uppercase}
+  .portfolio-list .row .ast{font-family:'Fraunces';font-style:italic;font-weight:300;font-size:24px;color:rgba(255,255,255,.85);line-height:1.3}
+  .portfolio-list .row .ast b{display:block;font-family:'Inter';font-style:normal;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.18em;color:#fff;margin-bottom:6px}
+
+  /* Logo blocks reused on Endurance / Genesis / Saga */
+  .end-logo-row{display:flex;align-items:center;gap:20px;margin-bottom:36px}
+  .logo-tile-dark{padding:14px 18px;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .logo-tile-dark img{height:64px;display:block}
+  .logo-tile-light{padding:14px 18px;background:var(--mitti);border-radius:6px;display:flex;align-items:center;justify-content:center}
+  .logo-tile-light img{height:64px;display:block;filter:brightness(0) invert(1)}
+  .logo-meta{display:flex;flex-direction:column;gap:4px}
+  .logo-meta span{font-family:'Oswald';font-weight:500;font-size:22px;color:#fff;text-transform:uppercase;letter-spacing:.04em;line-height:1}
+  .logo-meta small{font-family:'Inter';font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.65);font-weight:500}
+  .logo-meta.dark span{color:var(--ink)}
+  .logo-meta.dark small{color:rgba(14,14,16,.6)}
+
+  /* ---------- Endurance ---------- */
+  .s-end{background:var(--mitti);color:#fff;overflow:hidden}
+  .s-end::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(ellipse 1400px 800px at 70% 30%, rgba(130,180,255,.14), transparent 60%),
+    radial-gradient(ellipse 800px 600px at 10% 90%, rgba(130,180,255,.08), transparent 60%)
+  }
+  .end-grid{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1.1fr}
+  .end-left{padding:200px 60px 140px 80px;position:relative;display:flex;flex-direction:column}
+  .end-left .tag{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--indigo);font-weight:600;margin-bottom:24px;display:flex;align-items:center;gap:14px}
+  .end-left .tag .pill{padding:6px 14px;border:1px solid var(--indigo);color:var(--indigo);border-radius:999px;font-size:11px;letter-spacing:.22em}
+  .end-left h2{font-family:'Oswald';font-weight:400;font-size:140px;line-height:.86;color:#fff;letter-spacing:-.01em}
+  .end-left h2 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--indigo);text-transform:none}
+  .end-left .lede{font-family:'Fraunces';font-style:italic;font-weight:300;font-size:28px;color:rgba(255,255,255,.85);line-height:1.32;margin-top:40px;max-width:760px}
+  .end-left .body{margin-top:30px;font-size:18px;line-height:1.6;color:rgba(255,255,255,.75);max-width:760px}
+  .end-left .quote{margin-top:36px;padding:20px 28px;border-left:2px solid var(--indigo);font-family:'Fraunces';font-style:italic;font-weight:300;font-size:22px;color:#fff;line-height:1.4;max-width:760px}
+  .end-right{position:relative;display:flex;align-items:center;justify-content:center}
+  .end-card{width:680px;height:780px;background:#fff;color:var(--ink);position:relative;border-radius:4px;overflow:hidden;box-shadow:0 60px 120px rgba(0,0,0,.4)}
+  .end-card .head{padding:32px 40px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  .end-card .head img{height:36px}
+  .end-card .head .mono{color:rgba(14,14,16,.5)}
+  .end-card .body-c{padding:32px 40px}
+  .end-card .aum{font-family:'Oswald';font-weight:400;font-size:90px;color:var(--mitti);line-height:1;letter-spacing:-.01em}
+  .end-card .aum em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--ink);font-size:40px;text-transform:none}
+  .end-card .aum-label{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(14,14,16,.5);font-weight:500;margin-top:14px}
+  .end-card h3{font-family:'Oswald';font-weight:500;font-size:36px;color:var(--ink);line-height:.95;margin-top:28px}
+  .end-card h3 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--mitti);text-transform:none}
+  .end-card .thesis{margin-top:18px;font-family:'Fraunces';font-style:italic;font-size:19px;line-height:1.4;color:var(--ink-2)}
+  .end-card .focus{margin-top:24px;display:flex;flex-direction:column;gap:0}
+  .end-card .focus .row{display:grid;grid-template-columns:60px 1fr;padding:12px 0;border-bottom:1px solid var(--line-2);align-items:center}
+  .end-card .focus .row .n{font-size:11px;letter-spacing:.22em;color:rgba(14,14,16,.45);font-weight:500}
+  .end-card .focus .row .v{font-family:'Inter';font-size:16px;color:var(--ink);font-weight:500}
+  .end-card .focus .row .v small{display:block;font-weight:400;color:rgba(14,14,16,.55);font-size:13px;margin-top:2px}
+  .end-card .footer{position:absolute;left:40px;right:40px;bottom:24px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(14,14,16,.5);font-weight:500;padding-top:14px;border-top:1px solid var(--line)}
+
+  /* ---------- Genesis ---------- */
+  .s-gen{background:#fff}
+  .gen-grid{position:absolute;inset:0;display:grid;grid-template-columns:1.1fr 1fr}
+  .gen-left{padding:160px 60px 100px 80px;position:relative;display:flex;flex-direction:column}
+  .gen-left .tag{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--mitti);font-weight:600;margin-bottom:24px;display:flex;align-items:center;gap:14px}
+  .gen-left .tag .pill{padding:6px 14px;border:1px solid var(--mitti);color:var(--mitti);border-radius:999px;font-size:11px;letter-spacing:.22em}
+  .gen-left h2{font-family:'Oswald';font-weight:400;font-size:130px;line-height:.86;color:var(--ink);letter-spacing:-.01em}
+  .gen-left h2 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--mitti);text-transform:none}
+  .gen-left .lede{font-family:'Fraunces';font-style:italic;font-weight:300;font-size:26px;color:rgba(14,14,16,.72);line-height:1.32;margin-top:36px;max-width:760px}
+  .gen-left .body{margin-top:30px;font-size:17px;line-height:1.6;color:var(--ink-2);max-width:760px}
+  .gen-left .stats-row{margin-top:auto;padding-top:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line)}
+  .gen-left .stats-row .cell{padding:16px 16px 0 0}
+  .gen-left .stats-row .cell .k{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(14,14,16,.5);font-weight:500}
+  .gen-left .stats-row .cell .v{font-family:'Oswald';font-weight:400;font-size:48px;color:var(--mitti);line-height:1;margin-top:10px}
+  .gen-left .stats-row .cell .v em{font-family:'Fraunces';font-style:italic;font-size:22px;color:var(--ink);font-weight:300;text-transform:none}
+  .gen-left .stats-row .cell .desc{font-family:'Fraunces';font-style:italic;font-size:14px;color:rgba(14,14,16,.6);margin-top:6px}
+  .gen-right{position:relative;background:var(--mitti);overflow:hidden;color:#fff}
+  .gen-right::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 800px 600px at 80% 30%, rgba(130,180,255,.12), transparent 70%)}
+  .gen-right .gen-symbol{position:absolute;right:-200px;bottom:-160px;width:1100px;opacity:.16}
+  .gen-right .pull{position:absolute;left:60px;right:60px;top:120px;z-index:2}
+  .gen-right .pull .badge{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--indigo);font-weight:600;margin-bottom:24px}
+  .gen-right .pull .logo-tile{display:inline-block;padding:18px 24px;background:#fff;border-radius:6px;margin-bottom:28px}
+  .gen-right .pull .logo-tile img{height:64px;display:block}
+  .gen-right .pull h3{font-family:'Oswald';font-weight:400;font-size:80px;color:#fff;line-height:.9}
+  .gen-right .pull h3 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--indigo);text-transform:none}
+  .gen-right .product-list{position:absolute;left:60px;right:60px;bottom:100px;display:flex;flex-direction:column;gap:0}
+  .gen-right .product-list .row{display:grid;grid-template-columns:60px 1fr auto;align-items:center;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.18);font-family:'Inter';gap:24px}
+  .gen-right .product-list .row .n{font-size:11px;letter-spacing:.2em;color:rgba(255,255,255,.5);font-weight:500}
+  .gen-right .product-list .row .name{font-family:'Oswald';font-weight:400;font-size:22px;color:#fff;text-transform:uppercase;letter-spacing:.02em}
+  .gen-right .product-list .row .arrow{color:var(--indigo);font-size:18px}
+  .gen-right .product-list .head{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:14px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:8px}
+
+  /* ---------- Managed Offices ---------- */
+  .s-mo{background:var(--paper)}
+  .mo-head{position:absolute;left:80px;top:72px;right:80px}
+  .mo-head .eye{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--mitti);font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:14px}
+  .mo-head .eye .pill{padding:6px 14px;border:1px solid var(--mitti);color:var(--mitti);border-radius:999px;font-size:11px;letter-spacing:.22em}
+  .mo-head h1{font-family:'Oswald';font-weight:400;font-size:78px;line-height:.9;color:var(--ink);letter-spacing:-.01em}
+  .mo-head h1 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--mitti);text-transform:none}
+  .mo-head .sub{font-family:'Fraunces';font-style:italic;font-size:24px;color:rgba(14,14,16,.65);margin-top:24px;max-width:1100px;line-height:1.32}
+  .mo-pipeline{position:absolute;left:80px;right:80px;top:295px;bottom:140px;display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+  .mo-pipeline .head{display:grid;grid-template-columns:60px 1.4fr 1.4fr 1fr 0.8fr;padding:14px 0;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(14,14,16,.5);font-weight:500;gap:24px}
+  .mo-pipeline .row{display:grid;grid-template-columns:60px 1.4fr 1.4fr 1fr 0.8fr;padding:18px 0;border-bottom:1px solid var(--line);align-items:center;gap:24px}
+  .mo-pipeline .row .n{font-size:11px;letter-spacing:.2em;color:rgba(14,14,16,.45);font-weight:500}
+  .mo-pipeline .row .city{font-family:'Oswald';font-weight:500;font-size:28px;color:var(--mitti);text-transform:uppercase;letter-spacing:.02em;line-height:1}
+  .mo-pipeline .row .area{font-family:'Inter';font-size:17px;color:var(--ink);font-weight:500}
+  .mo-pipeline .row .area small{display:block;font-weight:400;color:rgba(14,14,16,.55);font-size:13px;margin-top:2px}
+  .mo-pipeline .row .partner{font-family:'Inter';font-size:14px;color:var(--ink-2)}
+  .mo-pipeline .row .stage{font-family:'Inter';font-size:11px;color:var(--mitti);font-weight:600;text-transform:uppercase;letter-spacing:.2em;text-align:center}
+  .mo-pipeline .row .stage.live{color:#1F8A5B}
+  .mo-pipeline .row .stage.inprog{color:#B35C00}
+
+  /* ---------- Location Spotlight ---------- */
+  .s-loc{background:var(--paper)}
+  .loc-head{position:absolute;left:80px;top:72px;right:80px}
+  .loc-head .eye{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--mitti);font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:14px}
+  .loc-head .eye .pill{padding:6px 14px;border:1px solid var(--mitti);color:var(--mitti);border-radius:999px;font-size:11px;letter-spacing:.22em}
+  .loc-head h1{font-family:'Oswald';font-weight:400;font-size:78px;line-height:.9;color:var(--ink);letter-spacing:-.01em}
+  .loc-head h1 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--mitti);text-transform:none}
+  .loc-head .sub{font-family:'Fraunces';font-style:italic;font-size:24px;color:rgba(14,14,16,.65);margin-top:20px;max-width:1400px;line-height:1.32}
+  .loc-facts{margin-top:28px;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);max-width:1760px}
+  .loc-facts .cell{padding:16px 24px 0 0}
+  .loc-facts .k{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(14,14,16,.5);font-weight:500}
+  .loc-facts .v{font-family:'Inter';font-size:17px;color:var(--ink);font-weight:500;margin-top:8px}
+  .loc-media{position:absolute;left:80px;right:80px;top:452px;bottom:140px;border-radius:6px;overflow:hidden;box-shadow:0 24px 60px -20px rgba(90,10,45,.35),0 8px 20px -10px rgba(14,14,16,.3)}
+  .loc-media .loc-photo-img{width:100%;height:100%;object-fit:cover;object-position:center 32%;display:block}
+  .loc-media::after{content:'';position:absolute;inset:0;background:linear-gradient(to top, rgba(14,14,16,.55), transparent 34%);pointer-events:none}
+  .loc-media .loc-tag{position:absolute;left:32px;bottom:28px;z-index:2;padding:8px 16px;border-radius:999px;background:var(--mitti);color:#fff;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600}
+  .loc-media .loc-map-inset{position:absolute;right:32px;bottom:28px;width:190px;height:150px;border-radius:6px;overflow:hidden;border:2px solid #fff;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);z-index:2}
+  .loc-media .loc-map-inset img{width:100%;height:100%;object-fit:cover;display:block}
+
+  /* ---------- Calangute / Goa (new format) ---------- */
+  .s-goa-1, .s-goa-2{
+    --goa-ink:#1C130A;
+    --goa-cream:#F5EAD6;
+    --goa-terracotta:#C1592B;
+    --goa-teal:#123F38;
+    --goa-gold:#D9AE68;
+    --goa-palm:#5B7A43;
+    background:#0A0806;
+    overflow:hidden;
+  }
+  .goa-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1);transform-origin:56% 48%}
+  .slide[data-active] .goa-bg{animation:goaKenBurns 16000ms cubic-bezier(.25,.1,.25,1) forwards}
+  @keyframes goaKenBurns{from{transform:scale(1)}to{transform:scale(1.1)}}
+  .goa-scrim{position:absolute;inset:0;pointer-events:none;background:
+    linear-gradient(to top, rgba(9,6,3,.88) 0%, rgba(9,6,3,.28) 40%, rgba(9,6,3,.1) 60%, rgba(9,6,3,.5) 100%),
+    linear-gradient(to right, rgba(9,6,3,.4), transparent 50%)}
+  .goa-tint{position:absolute;inset:0;pointer-events:none;background:var(--goa-terracotta);opacity:.12;mix-blend-mode:multiply}
+  .goa-grain{position:absolute;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .goa-eyebrow{position:absolute;left:80px;top:150px;right:80px;display:flex;align-items:center;gap:16px;z-index:2}
+  .goa-eyebrow .pill{padding:9px 20px;border:1px solid rgba(245,234,214,.5);border-radius:999px;font-family:'Inter';font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--goa-cream);font-weight:600;background:rgba(20,14,8,.28);backdrop-filter:blur(8px)}
+  .goa-eyebrow .tag{font-family:'Inter';font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--goa-gold);font-weight:600}
+  .goa-head{position:absolute;left:80px;right:80px;top:238px;z-index:2}
+  .goa-head h1{font-family:'Fraunces';font-weight:400;font-size:104px;line-height:.98;color:var(--goa-cream);letter-spacing:-.01em}
+  .goa-head h1 em{font-style:italic;font-weight:300;color:var(--goa-gold);display:block;margin-top:2px}
+  .goa-head .sub{margin-top:30px;font-family:'Inter';font-weight:300;font-size:21px;line-height:1.6;color:rgba(245,234,214,.85);max-width:860px}
+  .goa-facts{position:absolute;left:80px;right:80px;bottom:150px;display:flex;gap:14px;z-index:2;flex-wrap:wrap}
+  .goa-facts .chip{padding:16px 22px;border-radius:12px;background:rgba(20,14,8,.38);backdrop-filter:blur(10px);border:1px solid rgba(245,234,214,.16);min-width:210px}
+  .goa-facts .chip .k{font-family:'Inter';font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(245,234,214,.55);font-weight:600}
+  .goa-facts .chip .v{font-family:'Inter';font-size:16px;color:var(--goa-cream);font-weight:500;margin-top:7px}
+  .goa-inset{position:absolute;right:80px;bottom:150px;width:360px;height:230px;border-radius:10px;overflow:hidden;border:3px solid rgba(245,234,214,.9);box-shadow:0 24px 55px -16px rgba(0,0,0,.65);z-index:2}
+  .goa-inset img{width:100%;height:100%;object-fit:cover;display:block}
+  .goa-inset .cap{position:absolute;left:0;right:0;bottom:0;padding:9px 14px;background:rgba(9,6,3,.6);font-family:'Inter';font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--goa-cream);font-weight:600}
+  .goa-palette{position:absolute;left:80px;bottom:150px;right:480px;z-index:2}
+  .goa-palette .group-label{font-family:'Inter';font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(245,234,214,.55);font-weight:600;margin-bottom:14px}
+  .goa-swatch-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}
+  .goa-swatch-row:last-child{margin-bottom:0}
+  .goa-chip{display:flex;align-items:center;gap:10px;padding:9px 18px 9px 10px;border-radius:999px;background:rgba(20,14,8,.38);backdrop-filter:blur(10px);border:1px solid rgba(245,234,214,.16)}
+  .goa-chip .dot{width:17px;height:17px;border-radius:50%;flex:none;border:1px solid rgba(255,255,255,.35)}
+  .goa-chip span{font-family:'Inter';font-size:13px;color:var(--goa-cream);font-weight:500;white-space:nowrap}
+
+  /* ---------- Zoom ---------- */
+  .s-zoom{background:var(--paper-2);overflow:hidden}
+  .zoom-bg{position:absolute;inset:0;background:
+    radial-gradient(ellipse 1200px 900px at 100% 100%, rgba(90,10,45,.06), transparent 60%),
+    radial-gradient(ellipse 900px 700px at 0% 0%, rgba(90,10,45,.04), transparent 60%)
+  }
+  .zoom-num{position:absolute;left:80px;top:120px;font-family:'Oswald';font-weight:300;font-size:380px;color:rgba(90,10,45,.08);line-height:.8;letter-spacing:-.04em;pointer-events:none;user-select:none}
+  .zoom-content{position:absolute;left:80px;top:280px;right:80px}
+  .zoom-content .tag{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--mitti);font-weight:600;margin-bottom:24px;display:flex;align-items:center;gap:14px}
+  .zoom-content .tag .pill{padding:6px 14px;border:1px solid var(--mitti);color:var(--mitti);border-radius:999px;font-size:11px;letter-spacing:.22em}
+  .zoom-content h2{font-family:'Oswald';font-weight:400;font-size:170px;line-height:.84;color:var(--ink);letter-spacing:-.012em}
+  .zoom-content h2 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--mitti);text-transform:none}
+  .zoom-content .lede{font-family:'Fraunces';font-style:italic;font-weight:300;font-size:28px;color:rgba(14,14,16,.72);line-height:1.32;margin-top:48px;max-width:1100px}
+  .zoom-grid{position:absolute;left:80px;right:80px;bottom:160px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line)}
+  .zoom-grid .cell{padding:32px 32px 0 0;border-right:1px solid var(--line);min-height:200px}
+  .zoom-grid .cell:last-child{border-right:none}
+  .zoom-grid .cell .k{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(14,14,16,.5);font-weight:500;margin-bottom:24px;display:flex;align-items:center;gap:10px}
+  .zoom-grid .cell .k .dot{width:6px;height:6px;background:var(--mitti);border-radius:50%}
+  .zoom-grid .cell .v{font-family:'Oswald';font-weight:400;font-size:38px;color:var(--mitti);line-height:.95}
+  .zoom-grid .cell .desc{font-family:'Inter';font-size:15px;color:var(--ink-2);margin-top:14px;line-height:1.5;max-width:340px}
+
+  /* ---------- Org chart ---------- */
+  .s-org{background:#fff}
+  .org-head{position:absolute;left:80px;top:160px;right:80px}
+  .org-head .eye{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--mitti);font-weight:600;margin-bottom:24px}
+  .org-head h1{font-family:'Oswald';font-weight:400;font-size:110px;line-height:.92;color:var(--ink)}
+  .org-head h1 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--mitti);text-transform:none}
+  .org-canvas{position:absolute;left:80px;right:80px;top:420px;bottom:140px}
+  .org-canvas svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+  .org-node{position:absolute;background:#fff;border:1px solid var(--line);padding:20px 22px;display:flex;flex-direction:column;gap:8px;box-shadow:0 20px 50px rgba(0,0,0,.06);border-radius:4px}
+  .org-node.parent{background:var(--mitti);color:#fff;border-color:var(--mitti)}
+  .org-node .k{font-size:10px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;opacity:.6}
+  .org-node .name{font-family:'Oswald';font-weight:500;font-size:24px;line-height:1;color:var(--ink)}
+  .org-node.parent .name{color:#fff}
+  .org-node .desc{font-size:12px;color:rgba(14,14,16,.6);line-height:1.4}
+  .org-node.parent .desc{color:rgba(255,255,255,.7)}
+  .org-node .since{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mitti);font-weight:600;margin-top:2px}
+  .org-node.parent .since{color:var(--indigo)}
+
+  /* ---------- Why ---------- */
+  .s-why{background:var(--mitti);color:#fff;overflow:hidden}
+  .s-why::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(ellipse 1400px 900px at 80% 80%, rgba(130,180,255,.12), transparent 60%)
+  }
+  .why-head{position:absolute;left:80px;top:200px;right:80px}
+  .why-head .eye{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--indigo);font-weight:600;margin-bottom:24px}
+  .why-head h1{font-family:'Oswald';font-weight:400;font-size:130px;line-height:.9;color:#fff;letter-spacing:-.01em}
+  .why-head h1 em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--indigo);text-transform:none}
+  .why-grid{position:absolute;left:80px;right:80px;bottom:140px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid rgba(255,255,255,.2)}
+  .why-grid .cell{padding:36px 28px 0 0;border-right:1px solid rgba(255,255,255,.16);min-height:300px;position:relative}
+  .why-grid .cell:last-child{border-right:none}
+  .why-grid .cell .num{font-family:'Oswald';font-weight:400;font-size:90px;color:var(--indigo);line-height:1;letter-spacing:-.01em}
+  .why-grid .cell h3{font-family:'Oswald';font-weight:500;font-size:30px;color:#fff;line-height:1;margin-top:24px;text-transform:uppercase;letter-spacing:.02em}
+  .why-grid .cell .desc{font-family:'Inter';font-size:15px;color:rgba(255,255,255,.72);margin-top:16px;line-height:1.5;max-width:340px}
+
+  /* ---------- Video Overlay ---------- */
+  #video-overlay {
+    display: none;
+    opacity: 0;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #000;
+  }
+  #video-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* ---------- Contact ---------- */
+  .s-contact{background:#fff}
+  .contact-mark{position:absolute;left:80px;top:80px;display:flex;align-items:center;gap:18px}
+  .contact-mark img{height:54px}
+  .contact-stack{position:absolute;left:80px;right:80px;top:50%;transform:translateY(-50%)}
+  .contact-eye{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--mitti);font-weight:600;margin-bottom:32px}
+  .contact-title{font-family:'Oswald';font-weight:400;font-size:200px;line-height:.86;color:var(--mitti);letter-spacing:-.012em}
+  .contact-title em{font-family:'Fraunces';font-style:italic;font-weight:300;color:var(--ink);text-transform:none}
+  .contact-grid{position:absolute;left:80px;right:80px;bottom:140px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line)}
+  .contact-grid .cell{padding:32px 32px 0 0;border-right:1px solid var(--line)}
+  .contact-grid .cell:last-child{border-right:none}
+  .contact-grid .cell .k{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--mitti);font-weight:600;margin-bottom:18px}
+  .contact-grid .cell .v{font-family:'Oswald';font-weight:400;font-size:28px;color:var(--ink);line-height:1.2;letter-spacing:.005em}
+  .contact-grid .cell .v small{display:block;font-family:'Inter';font-weight:400;font-size:14px;color:rgba(14,14,16,.65);margin-top:8px;letter-spacing:.04em;text-transform:none}
+</style>
+</head>
+<body>
+<deck-stage>
+
+<script type="application/json" id="speaker-notes">
+[
+  "Calangute reveal — the upcoming AC Hotels by Marriott at Calangute, Goa, a Saga Hotels property. Landscape design built on five elements: earth, water, fire, air and space.",
+  "Calangute landscape language — the material and planting palette behind the design: grey andesite, terracotta and teak, set against olive trees, palms and frangipani.",
+  "Cover slide. Diversified family-owned group with four operating platforms across hospitality, public-market investing, lending, and managed offices.",
+  "Group at a glance — 35+ years of operating history, ~₹450 Cr combined AUM across Genesis and Endurance, hospitality assets in three destinations, and a managed offices pipeline approaching half a million square feet.",
+  "Four platforms, one family. Saga Hotels, Endurance Capital, Genesis Finance, and the upcoming Managed Offices platform.",
+  "Saga Hotels — the group's hospitality platform, with assets in Kochi (Hyatt-branded), Goa (upcoming Marriott at Calangute) and Mukteshwar (hotel and managed villas), supported by global hospitality and FM partners.",
+  "Endurance Capital — the group's public markets investment platform, operating as an AIF with approximately ₹250 Cr AUM, focused on quality businesses, capital preservation, and compounding returns.",
+  "Genesis Finance — NBFC since 1989, over three decades of operating history, ~₹250 Cr AUM, built on relationship-led credit and prudent underwriting.",
+  "The upcoming Managed Offices platform — premium serviced workspaces across Noida, Bengaluru, Aerocity Delhi, BKC and Lower Parel Mumbai. Built with an institutional operating model.",
+  "Location spotlight — Salcon Rasvilas, Saket, the first Managed Offices site, inside South Delhi's Select Citywalk neighbourhood, phased roll-out from November 2026.",
+  "Group structure — one family, four operating platforms. All operating companies are professionally run with clear governance.",
+  "Why this group is a confident counterparty — three decades of operating history, regulated entities, institutional capital strength, and skin in the game.",
+  "Contact details for the group and the principals."
+]
+</script>
+
+<!-- ============== 0A CALANGUTE — REVEAL ============== -->
+<section class="slide s-goa-1" data-screen-label="Calangute — Reveal">
+  <img class="goa-bg" src="assets/calangute-front.jpg" alt="AC Hotels by Marriott, Calangute — front view at dusk">
+  <div class="goa-scrim"></div>
+  <div class="goa-tint"></div>
+  <div class="goa-grain"></div>
+  <div class="frame dark fade" style="--d:200ms"></div>
+  <div class="topbar dark">
+    <div class="left reveal" style="--d:300ms">
+      <img src="assets/haus-symbol-white.png" class="symbol" alt="">
+    </div>
+    <div class="reveal" style="--d:400ms">Saga Hotels · Calangute</div>
+  </div>
+  <div class="footbar dark">
+    <div class="reveal" style="--d:600ms">Landscape design in progress</div>
+    <div class="reveal" style="--d:600ms">Goa, India</div>
+  </div>
+
+  <div class="goa-eyebrow">
+    <span class="pill reveal" style="--d:500ms">Saga Hotels · Upcoming</span>
+    <span class="tag reveal" style="--d:650ms">AC Hotels by Marriott</span>
+  </div>
+
+  <div class="goa-head">
+    <h1>
+      <span class="reveal" style="--d:800ms">Five elements.</span>
+      <em class="reveal" style="--d:1100ms">One Calangute address.</em>
+    </h1>
+    <div class="sub reveal" style="--d:1400ms">AC Hotels by Marriott, Calangute — a landscape-led arrival on North Goa's most iconic stretch of sand, designed around earth, water, fire, air and space.</div>
+  </div>
+
+  <div class="goa-facts">
+    <div class="chip reveal" style="--d:1700ms"><div class="k">Location</div><div class="v">Calangute, North Goa</div></div>
+    <div class="chip reveal" style="--d:1800ms"><div class="k">Brand Partner</div><div class="v">AC Hotels by Marriott</div></div>
+    <div class="chip reveal" style="--d:1900ms"><div class="k">Design Language</div><div class="v">Earth · Water · Fire · Air · Space</div></div>
+    <div class="chip reveal" style="--d:2000ms"><div class="k">Status</div><div class="v">In Design Development</div></div>
+  </div>
+</section>
+
+<!-- ============== 0B CALANGUTE — LANDSCAPE LANGUAGE ============== -->
+<section class="slide s-goa-2" data-screen-label="Calangute — Landscape">
+  <img class="goa-bg" src="assets/calangute-pool.jpg" alt="AC Hotels by Marriott, Calangute — rooftop pool view">
+  <div class="goa-scrim"></div>
+  <div class="goa-tint"></div>
+  <div class="goa-grain"></div>
+  <div class="frame dark fade" style="--d:200ms"></div>
+  <div class="topbar dark">
+    <div class="left reveal" style="--d:300ms">
+      <img src="assets/haus-symbol-white.png" class="symbol" alt="">
+    </div>
+    <div class="reveal" style="--d:400ms">Saga Hotels · Calangute</div>
+  </div>
+  <div class="footbar dark">
+    <div class="reveal" style="--d:600ms">Landscape design in progress</div>
+    <div class="reveal" style="--d:600ms">Goa, India</div>
+  </div>
+
+  <div class="goa-eyebrow">
+    <span class="pill reveal" style="--d:500ms">Landscape Language</span>
+  </div>
+
+  <div class="goa-head">
+    <h1>
+      <span class="reveal" style="--d:800ms">Built from</span>
+      <em class="reveal" style="--d:1100ms">the island itself.</em>
+    </h1>
+    <div class="sub reveal" style="--d:1400ms">Grey andesite, warm teak and brass — grounded by a planting palette native to the coast.</div>
+  </div>
+
+  <div class="goa-palette">
+    <div class="group-label reveal" style="--d:1600ms">Materials</div>
+    <div class="goa-swatch-row">
+      <div class="goa-chip reveal" style="--d:1650ms"><span class="dot" style="background:#8B8580"></span><span>Grey Andesite</span></div>
+      <div class="goa-chip reveal" style="--d:1700ms"><span class="dot" style="background:#B5551F"></span><span>Terracotta</span></div>
+      <div class="goa-chip reveal" style="--d:1750ms"><span class="dot" style="background:#8C6A3F"></span><span>Bronze Metal</span></div>
+      <div class="goa-chip reveal" style="--d:1800ms"><span class="dot" style="background:#5A3A22"></span><span>Teak Deck</span></div>
+      <div class="goa-chip reveal" style="--d:1850ms"><span class="dot" style="background:#2F6F7A"></span><span>Blue Tile</span></div>
+      <div class="goa-chip reveal" style="--d:1900ms"><span class="dot" style="background:#1C1C1C"></span><span>Black Granite</span></div>
+    </div>
+    <div class="group-label reveal" style="--d:1950ms">Signature Planting</div>
+    <div class="goa-swatch-row">
+      <div class="goa-chip reveal" style="--d:2000ms"><span class="dot" style="background:#5B7A43"></span><span>Olive Tree</span></div>
+      <div class="goa-chip reveal" style="--d:2050ms"><span class="dot" style="background:#5B7A43"></span><span>MacArthur Palm</span></div>
+      <div class="goa-chip reveal" style="--d:2100ms"><span class="dot" style="background:#5B7A43"></span><span>Frangipani</span></div>
+      <div class="goa-chip reveal" style="--d:2150ms"><span class="dot" style="background:#5B7A43"></span><span>Orange Jasmine</span></div>
+      <div class="goa-chip reveal" style="--d:2200ms"><span class="dot" style="background:#5B7A43"></span><span>Beach Spider Lily</span></div>
+    </div>
+  </div>
+
+  <div class="goa-inset reveal" style="--d:1300ms">
+    <img src="assets/calangute-lobby.jpg" alt="AC Hotels by Marriott, Calangute — lobby view">
+    <div class="cap">Lobby View</div>
+  </div>
+</section>
+
+<!-- ============== 1 COVER ============== -->
+<section class="slide s-cover" data-screen-label="01 Cover">
+  <div class="gridlines fade" style="--d:200ms"></div>
+
+  <div class="cover-stack">
+    <div class="cover-eyebrow">
+      <span class="bar grow" style="--d:600ms"></span>
+      <span class="reveal" style="--d:800ms">A Diversified Family Group · Est. 1989</span>
+    </div>
+    <h1 class="cover-title">
+      <span class="letters">
+        <span><b style="--d:700ms">B</b></span><span><b style="--d:740ms">U</b></span><span><b style="--d:780ms">I</b></span><span><b style="--d:820ms">L</b></span><span><b style="--d:860ms">T</b></span>
+      </span>
+      <span class="letters" style="margin-left:24px">
+        <span><b style="--d:1000ms">T</b></span><span><b style="--d:1040ms">O</b></span>
+      </span>
+      <em class="reveal" style="--d:1300ms">endure.</em>
+    </h1>
+    <div class="cover-sub reveal" style="--d:1700ms">A diversified family group operating across hospitality, public market investing, non-bank lending, managed offices and media — with thirty-five years of continuous operating history and institutional partnerships across the country.</div>
+  </div>
+
+  <div class="cover-foot reveal" style="--d:2000ms;gap:48px;letter-spacing:normal;text-transform:none">
+    <div class="end-logo-row" style="margin-bottom:0">
+      <div class="logo-tile-light" style="padding:16px 24px;box-shadow:0 8px 32px rgba(90,10,45,.22)">
+        <img src="assets/haus-logo-white.png" alt="Haus+" style="height:80px;display:block;image-rendering:-webkit-optimize-contrast">
+      </div>
+      <div class="logo-meta dark"><span style="font-size:20px">Haus+</span><small>Managed Offices</small></div>
+    </div>
+    <div class="end-logo-row" style="margin-bottom:0">
+      <div class="logo-tile-dark" style="padding:16px 24px">
+        <img src="assets/endurance-logo.jpeg" alt="Endurance Capital" style="height:80px;display:block;image-rendering:-webkit-optimize-contrast">
+      </div>
+      <div class="logo-meta dark"><span style="font-size:20px">Endurance Capital</span><small>SEBI AIF · Investments</small></div>
+    </div>
+    <div class="end-logo-row" style="margin-bottom:0">
+      <div class="logo-tile-dark" style="padding:16px 24px">
+        <img src="assets/genesis-logo.png" alt="Genesis Finance" style="height:80px;display:block;image-rendering:-webkit-optimize-contrast">
+      </div>
+      <div class="logo-meta dark"><span style="font-size:20px">Genesis Finance</span><small>RBI NBFC · est. 1989</small></div>
+    </div>
+  </div>
+
+  <div class="cover-pageno reveal" style="--d:2200ms">01 / 11 — Cover</div>
+</section>
+
+<!-- ============== 2 GLANCE ============== -->
+<section class="slide s-glance" data-screen-label="02 Glance">
+  <div class="frame fade" style="--d:200ms"></div>
+  <div class="topbar">
+    <div class="left reveal" style="--d:300ms">
+      <img src="assets/haus-symbol-mitti.png" class="symbol" alt="">
+    </div>
+    <div class="reveal" style="--d:400ms">02 — At a Glance</div>
+  </div>
+  <div class="footbar">
+    <div class="reveal" style="--d:600ms">Saga · Endurance · Genesis · Managed Offices</div>
+    <div class="reveal" style="--d:600ms">New Delhi · India</div>
+  </div>
+
+  <div class="glance-head">
+    <div class="eye reveal" style="--d:300ms">— A Group at a Glance</div>
+    <h1>
+      <span class="reveal" style="--d:500ms">Three decades.</span><br>
+      <em class="reveal" style="--d:800ms">Four platforms.</em><br>
+      <span class="reveal" style="--d:1100ms">One family.</span>
+    </h1>
+  </div>
+
+  <div class="glance-stats">
+    <div class="cell">
+      <div class="label reveal" style="--d:1300ms">Operating Since</div>
+      <div class="num reveal" style="--d:1450ms">1989</div>
+      <div class="desc reveal" style="--d:1600ms">Genesis Finance — over three decades of operating history.</div>
+    </div>
+    <div class="cell">
+      <div class="label reveal" style="--d:1400ms">Combined AUM</div>
+      <div class="num reveal" style="--d:1550ms">~₹500Cr</div>
+      <div class="desc reveal" style="--d:1700ms">Across Genesis Finance (NBFC) and Endurance Capital (AIF).</div>
+    </div>
+    <div class="cell">
+      <div class="label reveal" style="--d:1500ms">Hospitality Assets</div>
+      <div class="num reveal" style="--d:1650ms">03</div>
+      <div class="desc reveal" style="--d:1800ms">Hyatt Kochi · Marriott Goa (upcoming) · Mukteshwar.</div>
+    </div>
+    <div class="cell">
+      <div class="label reveal" style="--d:1600ms">Office Pipeline</div>
+      <div class="num reveal" style="--d:1750ms"><em>~</em>500<small>K sq ft</small></div>
+      <div class="desc reveal" style="--d:1900ms">Managed offices pipeline across Delhi NCR, Bengaluru, Mumbai.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 3 PLATFORMS ============== -->
+<section class="slide s-platforms" data-screen-label="03 Platforms">
+  <div class="frame fade" style="--d:200ms"></div>
+  <div class="topbar">
+    <div class="left reveal" style="--d:300ms">
+      <img src="assets/haus-symbol-mitti.png" class="symbol" alt="">
+    </div>
+    <div class="reveal" style="--d:400ms">03 — Platforms</div>
+  </div>
+  <div class="footbar">
+    <div class="reveal" style="--d:600ms"></div>
+    <div class="reveal" style="--d:600ms"></div>
+  </div>
+
+  <div class="pl-head">
+    <h1>
+      <span class="reveal" style="--d:300ms">Four platforms.</span><br>
+      <em class="reveal" style="--d:600ms">One philosophy.</em>
+    </h1>
+    <div class="meta reveal" style="--d:900ms">Family Owned<br>Institutionally Partnered<br>Built for the long term</div>
+  </div>
+
+  <div class="pl-grid">
+    <div class="pl">
+      <div class="badge reveal" style="--d:1100ms"><span class="dot"></span> 01 Hospitality</div>
+      <h3 class="reveal" style="--d:1250ms">Saga<br><em>Hotels</em></h3>
+      <div class="since reveal" style="--d:1400ms">Hyatt · Marriott partners</div>
+      <p class="desc reveal" style="--d:1550ms">Owns and operates hospitality assets in Kochi, Goa and Mukteshwar — destination-led, family-owned.</p>
+      <div class="tags">
+        <div class="row reveal" style="--d:1700ms"><span>Format</span><span>Own &amp; operate</span></div>
+        <div class="row reveal" style="--d:1750ms"><span>Brands</span><span>Hyatt · Marriott</span></div>
+        <div class="row reveal" style="--d:1800ms"><span>Cities</span><span>Kochi · Goa · Mukteshwar</span></div>
+      </div>
+    </div>
+    <div class="pl">
+      <div class="badge reveal" style="--d:1200ms"><span class="dot"></span> 02 Public Markets</div>
+      <h3 class="reveal" style="--d:1350ms">Endurance<br><em>Capital</em></h3>
+      <div class="since reveal" style="--d:1500ms"></div>
+      <p class="desc reveal" style="--d:1650ms">Alternative Investment Fund platform — long-term, research-driven investing focused on quality businesses and capital preservation.</p>
+      <div class="tags">
+        <div class="row reveal" style="--d:1800ms"><span>Type</span><span>SEBI AIF</span></div>
+        <div class="row reveal" style="--d:1850ms"><span>AUM</span><span>~₹250 Cr</span></div>
+        <div class="row reveal" style="--d:1900ms"><span>Focus</span><span>Indian equities</span></div>
+      </div>
+    </div>
+    <div class="pl">
+      <div class="badge reveal" style="--d:1300ms"><span class="dot"></span> 03 Lending</div>
+      <h3 class="reveal" style="--d:1450ms">Genesis<br><em>Finance</em></h3>
+      <div class="since reveal" style="--d:1600ms">NBFC · est. 1989</div>
+      <p class="desc reveal" style="--d:1750ms">NBFC with over three decades of operating history and ~₹250 Cr AUM. Built on relationship-led credit and prudent underwriting.</p>
+      <div class="tags">
+        <div class="row reveal" style="--d:1900ms"><span>Type</span><span>RBI NBFC</span></div>
+        <div class="row reveal" style="--d:1950ms"><span>AUM</span><span>~₹250 Cr</span></div>
+        <div class="row reveal" style="--d:2000ms"><span>Footprint</span><span>Pan-India</span></div>
+      </div>
+    </div>
+    <div class="pl">
+      <div class="badge reveal" style="--d:1400ms"><span class="dot"></span> 04 Workspaces</div>
+      <h3 class="reveal" style="--d:1550ms">Haus+<br><em>Offices</em></h3>
+      <div class="since reveal" style="--d:1700ms">~500K sq ft pipeline</div>
+      <p class="desc reveal" style="--d:1850ms">Premium, fully serviced, technology-enabled workspaces — for startups, SMEs, GCCs, and enterprise clients across major metros.</p>
+      <div class="tags">
+        <div class="row reveal" style="--d:2000ms"><span>Cities</span><span>Delhi · Bengaluru · Mumbai</span></div>
+        <div class="row reveal" style="--d:2050ms"><span>Anchor</span><span></span></div>
+        <div class="row reveal" style="--d:2100ms"><span>Status</span><span>Live + pipeline</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 4 SAGA HOTELS ============== -->
+<section class="slide s-saga" data-screen-label="04 Saga">
+  <div class="topbar">
+    <div class="left reveal" style="--d:300ms">
+      <img src="assets/haus-symbol-mitti.png" class="symbol" alt="">
+    </div>
+    <div class="reveal" style="--d:400ms">04 — Saga Hotels</div>
+  </div>
+
+  <div class="saga-grid">
+    <div class="saga-left">
+      <div class="end-logo-row reveal" style="--d:200ms">
+        <div class="logo-tile-light"><img src="assets/haus-symbol-white.png" alt="Saga" style="filter: none; opacity: 0"></div>
+        <div class="logo-meta dark"><span>Saga Hotels Pvt. Ltd.</span><small>Hospitality Platform · Family-owned</small></div>
+      </div>
+      <div class="tag reveal" style="--d:300ms">
+        <span class="pill">01 — Hospitality · Hyatt &amp; Marriott partners</span>
+      </div>
+      <h2>
+        <span class="reveal" style="--d:500ms">Destinations</span><br>
+        <em class="reveal" style="--d:800ms">worth keeping.</em>
+      </h2>
+      <p class="lede reveal" style="--d:1100ms">Saga Hotels Pvt. Ltd. owns and operates hospitality assets across key leisure and business destinations in India.</p>
+      <p class="body reveal" style="--d:1400ms">A family-owned platform with a long-term commitment to high-quality, destination-led hospitality assets — operated in partnership with global hospitality and facility management partners.</p>
+
+      <div class="partners">
+        <div class="row reveal" style="--d:1700ms"><div class="k">Ownership</div><div class="v">Family-owned and operated</div></div>
+        <div class="row reveal" style="--d:1800ms"><div class="k">Brand Partners</div><div class="v">Hyatt · Marriott</div></div>
+        <div class="row reveal" style="--d:1900ms"><div class="k">Operating Model</div><div class="v">Owned · Globally branded · Group operated</div></div>
+        <div class="row reveal" style="--d:2000ms"><div class="k">Horizon</div><div class="v">Long-term hold · destination-led</div></div>
+      </div>
+    </div>
+    <div class="saga-right">
+      <div class="saga-pull">
+        <div class="badge reveal" style="--d:500ms">— Hospitality Portfolio</div>
+        <h3>
+          <span class="reveal" style="--d:700ms">Three cities.</span><br>
+          <em class="reveal" style="--d:1000ms">Three stories.</em>
+        </h3>
+      </div>
+      <div class="portfolio-list">
+        <div class="head reveal" style="--d:1300ms"><span></span><span>Location</span><span>Asset / Positioning</span></div>
+        <div class="row reveal" style="--d:1500ms">
+          <div class="n">001</div>
+          <div class="loc">Kochi<small>Kerala</small></div>
+          <div class="ast"><b>Hyatt-branded</b>Hyatt-branded hospitality asset, owned by the group.</div>
+        </div>
+        <div class="row reveal" style="--d:1700ms">
+          <div class="n">002</div>
+          <div class="loc">Goa<small>Calangute</small></div>
+          <div class="ast"><b>Marriott · Upcoming</b>Upcoming Marriott hotel at Calangute, Goa — under development.</div>
+        </div>
+        <div class="row reveal" style="--d:1900ms">
+          <div class="n">003</div>
+          <div class="loc">Mukteshwar<small>Uttarakhand</small></div>
+          <div class="ast"><b>Hotel + Villas</b>Hotel and managed villas — boutique mountain destination.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 5 ENDURANCE ============== -->
+<section class="slide s-end" data-screen-label="05 Endurance">
+  <div class="frame dark fade" style="--d:200ms"></div>
+  <div class="topbar dark">
+    <div class="left reveal" style="--d:300ms">
+      <img src="assets/haus-symbol-white.png" class="symbol" alt="">
+    </div>
+    <div class="reveal" style="--d:400ms">05 — Endurance Capital</div>
+  </div>
+
+  <div class="end-grid">
+    <div class="end-left">
+      <div class="end-logo-row reveal" style="--d:200ms">
+        <div class="logo-tile-dark"><img src="assets/endurance-logo.jpeg" alt="Endurance Capital"></div>
+        <div class="logo-meta"><span>Endurance Capital</span><small>Public Markets Investment Platform</small></div>
+      </div>
+      <div class="tag reveal" style="--d:300ms">
+        <span class="pill">02 — Public Markets · Listed Equities</span>
+      </div>
+      <h2>
+        <span class="reveal" style="--d:500ms">Markets move.</span><br>
+        <em class="reveal" style="--d:800ms">Value endures.</em>
+      </h2>
+      <p class="lede reveal" style="--d:1100ms">The group's <strong>public markets</strong> investment platform — a SEBI-registered Alternative Investment Fund (AIF) investing in <strong>listed Indian equities</strong>, with approximately ₹250 Cr of assets under management.</p>
+      <p class="body reveal" style="--d:1400ms">Endurance Capital invests across Indian <strong>public stock markets</strong> with a long-term, research-driven approach focused on quality listed businesses, capital preservation, and compounding returns. We back enduring publicly-traded companies the old-fashioned way — patient capital, deep research.</p>
+      <div class="quote reveal" style="--d:1700ms">"Listed equities. Quality businesses. Capital preservation. Compounding returns."</div>
+    </div>
+    <div class="end-right">
+      <div class="end-card rise" style="--d:600ms">
+        <div class="head">
+          <img src="assets/endurance-logo.jpeg" alt="Endurance Capital">
+          <div class="mono">Listed Equities · AIF · India</div>
+        </div>
+        <div class="body-c">
+          <div class="aum-label">— Assets Under Management · Listed Public Equities</div>
+          <div class="aum"></div>
+          <h3>Public-market<br><em>investing.</em></h3>
+          <p class="thesis">Long-term ownership of high-quality companies listed on Indian stock exchanges. Concentrated portfolio. Research-driven. Built to compound through cycles.</p>
+          <div class="focus">
+            <div class="row"><div class="n">01</div><div class="v">Vehicle<small>SEBI Alternative Investment Fund (AIF)</small></div></div>
+            <div class="row"><div class="n">02</div><div class="v">Universe<small>Listed Indian equities · NSE / BSE</small></div></div>
+            <div class="row"><div class="n">03</div><div class="v">Hold<small>Multi-year · public stock markets</small></div></div>
+            <div class="row"><div class="n">04</div><div class="v">Style<small>Quality · Capital preservation · Compounding</small></div></div>
+          </div>
+        </div>
+        <div class="footer">
+          <span>endurancecap.in</span>
+          <span>Active</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 6 GENESIS ============== -->
+<section class="slide s-gen" data-screen-label="06 Genesis">
+  <div class="topbar">
+    <div class="left reveal" style="--d:300ms">
+      <img src="assets/haus-symbol-mitti.png" class="symbol" alt="">
+    </div>
+    <div class="reveal" style="--d:400ms">06 — Genesis Finance</div>
+  </div>
+
+  <div class="gen-grid">
+    <div class="gen-left">
+      <div class="end-logo-row reveal" style="--d:200ms">
+        <div class="logo-tile-light"><img src="assets/genesis-logo.png" alt="Genesis Finance"></div>
+        <div class="logo-meta dark"><span>Genesis Finance</span><small>Non-Banking Financial Company · est. 1989</small></div>
+      </div>
+      <div class="tag reveal" style="--d:300ms">
+        <span class="pill">03 — Lending · RBI-registered NBFC</span>
+      </div>
+      <h2>
+        <span class="reveal" style="--d:500ms">Three decades</span><br>
+        <em class="reveal" style="--d:800ms">of disciplined</em><br>
+        <span class="reveal" style="--d:1100ms">lending.</span>
+      </h2>
+      <p class="lede reveal" style="--d:1400ms">Genesis Finance Company Limited is a Non-Banking Financial Company established in 1989 — with over three decades of operating history.</p>
+      <p class="body reveal" style="--d:1700ms">A lending platform built on relationship-led credit, prudent underwriting, and responsible growth. Genesis Finance has served MSMEs and consumers across India through every economic cycle since the late 1980s.</p>
+      <div class="stats-row">
+        <div class="cell">
+          <div class="k reveal" style="--d:2000ms">Established</div>
+          <div class="v reveal" style="--d:2100ms">1989</div>
+          <div class="desc reveal" style="--d:2200ms">RBI · NBFC licence</div>
+        </div>
+        <div class="cell">
+          <div class="k reveal" style="--d:2050ms">AUM</div>
+          <div class="v reveal" style="--d:2150ms"><em>~₹</em>250 <em>Cr</em></div>
+          <div class="desc reveal" style="--d:2250ms">Assets under management</div>
+        </div>
+        <div class="cell">
+          <div class="k reveal" style="--d:2100ms">Track Record</div>
+          <div class="v reveal" style="--d:2200ms">35+ <em>yrs</em></div>
+          <div class="desc reveal" style="--d:2300ms">Through every cycle since 1989</div>
+        </div>
+      </div>
+    </div>
+    <div class="gen-right">
+      <div class="pull">
+        <div class="badge reveal" style="--d:500ms">— Operating Company</div>
+        <div class="logo-tile zoom-in" style="--d:700ms">
+          <img src="assets/genesis-logo.png" alt="Genesis Finance">
+        </div>
+        <h3>
+          <em class="reveal" style="--d:1000ms">Naye Bharat</em><br>
+          <span class="reveal" style="--d:1200ms">ki Finance</span><br>
+          <span class="reveal" style="--d:1400ms">Company.</span>
+        </h3>
+      </div>
+      <div class="product-list">
+        <div class="head reveal" style="--d:1700ms">— Lending Profile</div>
+        <div class="row reveal" style="--d:1850ms"><div class="n">001</div><div class="name">Relationship-Led Credit</div><div class="arrow">→</div></div>
+        <div class="row reveal" style="--d:1950ms"><div class="n">002</div><div class="name">Prudent Underwriting</div><div class="arrow">→</div></div>
+        <div class="row reveal" style="--d:2050ms"><div class="n">003</div><div class="name">Responsible Growth</div><div class="arrow">→</div></div>
+        <div class="row reveal" style="--d:2150ms"><div class="n">004</div><div class="name">Diversified Loan Book</div><div class="arrow">→</div></div>
+        <div class="row reveal" style="--d:2250ms"><div class="n">005</div><div class="name">Built for the Long Term</div><div class="arrow">→</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 7 MANAGED OFFICES ============== -->
+<section class="slide s-mo" data-screen-label="07 Managed Offices">
+  <div class="frame fade" style="--d:200ms"></div>
+  <div class="topbar">
+    <div class="left reveal" style="--d:300ms">
+      <img src="assets/haus-symbol-mitti.png" class="symbol" alt="">
+    </div>
+    <div class="reveal" style="--d:400ms">07 — Managed Offices</div>
+  </div>
+  <div class="footbar">
+    <div class="reveal" style="--d:600ms">Premium serviced workspaces · Pan-India pipeline</div>
+    <div class="reveal" style="--d:600ms"></div>
+  </div>
+
+  <div class="mo-head">
+    <div class="end-logo-row reveal" style="--d:100ms;margin-bottom:8px">
+      <div class="logo-tile-light" style="padding:8px 14px"><img src="assets/haus-logo-white.png" alt="Haus+" style="height:40px"></div>
+      <div class="logo-meta dark"><span>Haus+ Managed Offices</span><small>Premium Serviced Workspaces · Pan-India</small></div>
+    </div>
+    <div class="eye reveal" style="--d:300ms">
+      <span class="pill">04 — Workspaces</span>
+      <span>Upcoming Managed Offices Platform</span>
+    </div>
+    <h1>
+      <span class="reveal" style="--d:500ms">Half a million</span> <span class="reveal" style="--d:800ms">sq ft</span>
+      <span class="reveal" style="--d:1100ms"> in flight.</span>
+    </h1>
+    <div class="sub reveal" style="--d:1400ms">Premium, fully serviced, technology-enabled workspaces — for GCC, and enterprise clients</div>
+  </div>
+
+  <div class="mo-pipeline">
+    <div class="head reveal" style="--d:1600ms"><span></span><span>City / Micro-market</span><span>Approx. Area</span><span>Anchor</span><span>Status</span></div>
+    <div class="row reveal" style="--d:1800ms">
+      <div class="n">001</div>
+      <div class="city">New Delhi<small style="display:block;font-family:Inter;font-size:11px;color:rgba(14,14,16,.5);margin-top:4px;letter-spacing:.18em">Okhla Phase III</small></div>
+      <div class="area">~50,000 sq. ft.</div>
+      <div class="partner">NCR Value Corridor</div>
+      <div class="stage">Pipeline</div>
+    </div>
+    <div class="row reveal" style="--d:1900ms">
+      <div class="n">002</div>
+      <div class="city">New Delhi<small style="display:block;font-family:Inter;font-size:11px;color:rgba(14,14,16,.5);margin-top:4px;letter-spacing:.18em">Saket</small></div>
+      <div class="area">~20,000 sq. ft.</div>
+      <div class="partner">South Delhi Amenity Core</div>
+      <div class="stage inprog">In-Process</div>
+    </div>
+    <div class="row reveal" style="--d:2000ms">
+      <div class="n">003</div>
+      <div class="city">New Delhi<small style="display:block;font-family:Inter;font-size:11px;color:rgba(14,14,16,.5);margin-top:4px;letter-spacing:.18em">Green Park</small></div>
+      <div class="area">~25,000 sq. ft.</div>
+      <div class="partner">Ring Road Full-Building Play</div>
+      <div class="stage inprog">In-Process</div>
+    </div>
+    <div class="row reveal" style="--d:2100ms">
+      <div class="n">004</div>
+      <div class="city">Bengaluru<small style="display:block;font-family:Inter;font-size:11px;color:rgba(14,14,16,.5);margin-top:4px;letter-spacing:.18em">Koramangala</small></div>
+      <div class="area">~30,000 sq. ft.</div>
+      <div class="partner">Premium Enterprise Address</div>
+      <div class="stage">Pipeline</div>
+    </div>
+    <div class="row reveal" style="--d:2200ms">
+      <div class="n">005</div>
+      <div class="city">Bengaluru<small style="display:block;font-family:Inter;font-size:11px;color:rgba(14,14,16,.5);margin-top:4px;letter-spacing:.18em">Hebbal</small></div>
+      <div class="area">~50,000 sq. ft.</div>
+      <div class="partner">North Bengaluru Growth Corridor</div>
+      <div class="stage">Pipeline</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 8 LOCATION SPOTLIGHT ============== -->
+<section class="slide s-loc" data-screen-label="08 Location">
+  <div class="frame fade" style="--d:200ms"></div>
+  <div class="topbar">
+    <div class="left reveal" style="--d:300ms">
+      <img src="assets/haus-symbol-mitti.png" class="symbol" alt="">
+    </div>
+    <div class="reveal" style="--d:400ms">08 — Location Spotlight</div>
+  </div>
+  <div class="footbar">
+    <div class="reveal" style="--d:600ms">Premium serviced workspaces · Pan-India pipeline</div>
+    <div class="reveal" style="--d:600ms"></div>
+  </div>
+
+  <div class="loc-head">
+    <div class="eye reveal" style="--d:300ms">
+      <span class="pill">04 — Workspaces</span>
+      <span>Coming Up Next</span>
+    </div>
+    <h1>
+      <span class="reveal" style="--d:500ms">Our next address,</span>
+      <em class="reveal" style="--d:800ms">in the heart of the city.</em>
+    </h1>
+    <div class="sub reveal" style="--d:1100ms">Salcon Rasvilas, Saket — one of South Delhi's most connected micro-markets, minutes from Select Citywalk</div>
+    <div class="loc-facts">
+      <div class="cell reveal" style="--d:1300ms"><div class="k">Micro-market</div><div class="v">Saket District Centre</div></div>
+      <div class="cell reveal" style="--d:1380ms"><div class="k">Neighbours</div><div class="v">Select Citywalk · DLF Avenue</div></div>
+      <div class="cell reveal" style="--d:1460ms"><div class="k">Landmarks</div><div class="v">Max Hospital · PVR Saket</div></div>
+      <div class="cell reveal" style="--d:1540ms"><div class="k">Connectivity</div><div class="v">Saket &amp; Malviya Nagar Metro</div></div>
+      <div class="cell reveal" style="--d:1620ms"><div class="k">Status</div><div class="v">Phased roll-out · Nov 2026</div></div>
+    </div>
+  </div>
+
+  <div class="loc-media reveal" style="--d:1800ms">
+    <img class="loc-photo-img" src="assets/salcon-rasvilas.png" alt="Salcon Rasvilas, Saket">
+    <span class="loc-tag">Saket, New Delhi</span>
+    <div class="loc-map-inset"><img src="assets/salcon-rasvilas-map.png" alt="Salcon Rasvilas location map"></div>
+  </div>
+</section>
+
+<!-- ============== 9 ORG ============== -->
+<section class="slide s-org" data-screen-label="09 Structure">
+  <div class="frame fade" style="--d:200ms"></div>
+  <div class="topbar">
+    <div class="left reveal" style="--d:300ms">
+      <img src="assets/haus-symbol-mitti.png" class="symbol" alt="">
+    </div>
+    <div class="reveal" style="--d:400ms">09 — Group Structure</div>
+  </div>
+  <div class="footbar">
+    <div class="reveal" style="--d:600ms">Family-owned · Professionally run</div>
+    <div class="reveal" style="--d:600ms"></div>
+  </div>
+
+  <div class="org-head">
+    <div class="eye reveal" style="--d:300ms">— Group Structure</div>
+    <h1>
+      <span class="reveal" style="--d:500ms">One family.</span> <em class="reveal" style="--d:800ms">Four operating arms.</em>
+    </h1>
+  </div>
+
+  <div class="org-canvas">
+    <svg viewBox="0 0 1760 440" preserveAspectRatio="none">
+      <defs><style>.ln{fill:none;stroke:rgba(90,10,45,.4);stroke-width:1.5}</style></defs>
+      <path class="ln draw" style="--d:1200ms" d="M 880 70 V 200 H 110 V 280" pathLength="1"/>
+      <path class="ln draw" style="--d:1300ms" d="M 880 70 V 200 H 660 V 280" pathLength="1"/>
+      <path class="ln draw" style="--d:1400ms" d="M 880 70 V 200 H 1100 V 280" pathLength="1"/>
+      <path class="ln draw" style="--d:1500ms" d="M 880 70 V 200 H 1650 V 280" pathLength="1"/>
+    </svg>
+
+    <div class="org-node parent rise" style="--d:600ms;left:50%;top:0;transform:translateX(-50%);width:520px;text-align:center">
+      <div class="k">— Promoter Family</div>
+      <div class="name" style="text-align:left">The Group · Family-Owned</div>
+      <div class="desc" style="text-align:left">Promoter family · Delhi-based · 35+ years operating history</div>
+      <div class="since">est. 1989</div>
+    </div>
+
+    <div class="org-node rise" style="--d:1500ms;left:0;top:280px;width:calc(25% - 18px);height:200px">
+      <div class="k">— Op. Co. 01</div>
+      <div class="name">Saga Hotels</div>
+      <div class="desc">Hospitality · Hyatt &amp; Marriott partners</div>
+      <div class="since">3 destinations</div>
+    </div>
+    <div class="org-node rise" style="--d:1650ms;left:calc(25% + 8px);top:280px;width:calc(25% - 18px);height:200px">
+      <img src="assets/endurance-logo.jpeg" alt="Endurance Capital" style="position:absolute;top:16px;right:16px;height:44px;max-width:120px;object-fit:contain">
+      <div class="k">— Op. Co. 02</div>
+      <div class="name">Endurance Capital</div>
+      <div class="desc">SEBI AIF · Listed equities</div>
+      <div class="since">SEBI registered</div>
+    </div>
+    <div class="org-node rise" style="--d:1800ms;left:calc(50% + 16px);top:280px;width:calc(25% - 18px);height:200px">
+      <img src="assets/genesis-logo.png" alt="Genesis Finance" style="position:absolute;top:16px;right:16px;height:44px;max-width:120px;object-fit:contain">
+      <div class="k">— Op. Co. 03</div>
+      <div class="name">Genesis Finance</div>
+      <div class="desc">RBI NBFC · ~₹250 Cr AUM</div>
+      <div class="since">est. 1989</div>
+    </div>
+    <div class="org-node rise" style="--d:1950ms;right:0;top:280px;width:calc(25% - 18px);height:200px">
+      <img src="assets/haus-logo-mitti.png" alt="Haus+" style="position:absolute;top:16px;right:16px;height:44px;max-width:120px;object-fit:contain">
+      <div class="k">— Op. Co. 04</div>
+      <div class="name">Haus+</div>
+      <div class="desc">~500K sq ft pipeline · Workspaces</div>
+      <div class="since">In build-out</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 10 WHY ============== -->
+<section class="slide s-why" data-screen-label="10 Why Us">
+  <div class="frame dark fade" style="--d:200ms"></div>
+  <div class="topbar dark">
+    <div class="left reveal" style="--d:300ms">
+      <img src="assets/haus-symbol-white.png" class="symbol" alt="">
+    </div>
+    <div class="reveal" style="--d:400ms">10 — Why Us?</div>
+  </div>
+  <div class="footbar dark">
+    <div class="reveal" style="--d:600ms"></div>
+    <div class="reveal" style="--d:600ms"></div>
+  </div>
+
+  <div class="why-head">
+    <div class="eye reveal" style="--d:300ms">— Why Us?</div>
+    <h1>
+      <span class="reveal" style="--d:500ms">Long view.</span><br>
+      <em class="reveal" style="--d:800ms">Clean record.</em><br>
+      <span class="reveal" style="--d:1100ms">Skin in the game.</span>
+    </h1>
+  </div>
+
+  <div class="why-grid">
+    <div class="cell">
+      <div class="num reveal" style="--d:1300ms">01</div>
+      <h3 class="reveal" style="--d:1400ms">Longevity</h3>
+      <p class="desc reveal" style="--d:1500ms">35+ years of continuous operating history. Genesis Finance has weathered every economic cycle since 1989 — same family, same address.</p>
+    </div>
+    <div class="cell">
+      <div class="num reveal" style="--d:1400ms">02</div>
+      <h3 class="reveal" style="--d:1500ms">Regulated</h3>
+      <p class="desc reveal" style="--d:1600ms">RBI-supervised NBFC. SEBI-registered AIF. Globally branded hospitality (Hyatt, Marriott). Audited books and current filings across the group.</p>
+    </div>
+    <div class="cell">
+      <div class="num reveal" style="--d:1500ms">03</div>
+      <h3 class="reveal" style="--d:1600ms">Capital</h3>
+      <p class="desc reveal" style="--d:1700ms">~₹500 Cr of combined AUM across Genesis and Endurance, plus an owned hospitality portfolio. Rent and security deposit funded out of own balance sheet — no external dependency.</p>
+    </div>
+    <div class="cell">
+      <div class="num reveal" style="--d:1600ms">04</div>
+      <h3 class="reveal" style="--d:1700ms">Care</h3>
+      <p class="desc reveal" style="--d:1800ms">Hospitality-led operating mindset. Premises are treated as long-term assets — fit-out is institutional grade, reversible, insured, and pre-approved.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 11 CONTACT ============== -->
+<section class="slide s-contact" data-screen-label="11 Contact">
+  <div class="frame fade" style="--d:200ms"></div>
+  <div class="topbar" style="left:auto;right:80px;width:auto">
+    <div class="reveal" style="--d:400ms">11 — Contact &amp; Next Steps</div>
+  </div>
+
+  <div class="reveal" style="--d:300ms;position:absolute;left:80px;top:72px;display:flex;align-items:center;gap:44px">
+    <div class="end-logo-row" style="margin-bottom:0">
+      <div class="logo-tile-light" style="padding:16px 24px;box-shadow:0 8px 32px rgba(90,10,45,.22)">
+        <img src="assets/haus-logo-white.png" alt="Haus+" style="height:80px;display:block;image-rendering:-webkit-optimize-contrast">
+      </div>
+      <div class="logo-meta dark"><span style="font-size:20px">Haus+</span><small>Managed Offices</small></div>
+    </div>
+    <div class="end-logo-row" style="margin-bottom:0">
+      <div class="logo-tile-dark" style="padding:16px 24px">
+        <img src="assets/endurance-logo.jpeg" alt="Endurance Capital" style="height:80px;display:block;image-rendering:-webkit-optimize-contrast">
+      </div>
+      <div class="logo-meta dark"><span style="font-size:20px">Endurance Capital</span><small>SEBI AIF · Investments</small></div>
+    </div>
+    <div class="end-logo-row" style="margin-bottom:0">
+      <div class="logo-tile-dark" style="padding:16px 24px">
+        <img src="assets/genesis-logo.png" alt="Genesis Finance" style="height:80px;display:block;image-rendering:-webkit-optimize-contrast">
+      </div>
+      <div class="logo-meta dark"><span style="font-size:20px">Genesis Finance</span><small>RBI NBFC · est. 1989</small></div>
+    </div>
+  </div>
+  <div class="footbar">
+    <div class="reveal" style="--d:600ms">Thank you for your time</div>
+    <div class="reveal" style="--d:600ms"></div>
+  </div>
+
+  <div class="contact-stack">
+    <div class="contact-eye reveal" style="--d:400ms">— Let's connect.</div>
+    <h1 class="contact-title">
+      <span class="reveal" style="--d:600ms">Let's build</span><br>
+      <em class="reveal" style="--d:1000ms">something that lasts.</em>
+    </h1>
+  </div>
+
+  <div class="contact-grid">
+    <div class="cell">
+      <div class="k reveal" style="--d:1400ms"></div>
+      <div class="v reveal" style="--d:1500ms">505, DLF South Court<br>Saket, New Delhi — 110017<br><small>India · Group Headquarters</small></div>
+    </div>
+    <div class="cell">
+      <div class="k reveal" style="--d:1500ms">— Direct Contact</div>
+      <div class="v reveal" style="--d:1600ms">+91 11 2669 1132<br><small>Genesis Finance · main line</small><small>info@genesisfinance.net</small></div>
+    </div>
+    <div class="cell">
+      <div class="k reveal" style="--d:1600ms">— Web</div>
+      <div class="v reveal" style="--d:1700ms">endurancecap.in<br>genesisfinance.net</div>
+    </div>
+  </div>
+</section>
+
+</deck-stage>
+
+<script>
+(function(){
+  const stage = document.querySelector('deck-stage');
+  if (!stage) return;
+
+  function activate(slide) {
+    // Snap all animated children to their initial (hidden) state with no transition,
+    // then re-enable transitions and add data-active so animations play from frame 0.
+    slide.removeAttribute('data-active');
+    slide.classList.add('entering');
+    void slide.offsetHeight;         // flush: transitions suppressed, elements at t=0 state
+    slide.classList.remove('entering');
+    void slide.offsetHeight;         // flush: transitions re-enabled, still at t=0 state
+    slide.setAttribute('data-active',''); // fire all animations
+  }
+
+  // slidechange fires synchronously during data-deck-active switch — no async delay.
+  stage.addEventListener('slidechange', (e)=>{
+    const slides = stage.querySelectorAll(':scope > section.slide');
+    slides.forEach((s, i) => {
+      if (i !== e.detail.index) s.removeAttribute('data-active');
+    });
+    if (e.detail.reason !== 'init') activate(slides[e.detail.index]);
+  });
+
+  requestAnimationFrame(()=>{
+    const first = stage.querySelector(':scope > section.slide');
+    if (first) activate(first);
+  });
+})();
+</script>
+
+<!-- ════ VIDEO OVERLAY — alternates with slide deck ════ -->
+<div id="video-overlay">
+  <iframe id="video-frame" src="" allow="autoplay; fullscreen"></iframe>
+</div>
+
+<script>
+/* Auto-advance loop — each slide duration in milliseconds.
+   After one full cycle, fades in the reception video for VIDEO_MS,
+   then fades back to the slide deck from slide 1, and repeats. */
+(function(){
+  const DURATIONS = [
+    16000, // 00a Calangute — Reveal (plays right after the welcome video)
+    16000, // 00b Calangute — Landscape Language
+    12000, // 01 Cover
+    12000, // 02 Glance
+    14000, // 03 Platforms
+    12000, // 04 Saga
+    12000, // 05 Endurance
+    12000, // 06 Genesis
+    14000, // 07 Managed Offices
+    13000, // 08 Location Spotlight
+    12000, // 09 Structure
+    12000, // 10 Why
+    10000, // 11 Contact
+  ];
+
+  const SLIDE_CYCLE_MS = DURATIONS.reduce((a, b) => a + b, 0);
+  const VIDEO_URL      = window.location.hostname === 'localhost'
+    ? 'http://localhost:3000/'
+    : 'index.html';
+  const VIDEO_MS       = 16000;   // Delhi video length (fallback)
+  const FADE_MS        = 1200;    // crossfade duration
+
+  let slideHandle = null;
+  let modeHandle  = null;
+  let videoActive = false;
+
+  // ── Slide scheduling ──────────────────────────────────
+  function scheduleNext(stage, idx) {
+    if (videoActive) return;
+    const dur = DURATIONS[idx] !== undefined ? DURATIONS[idx] : 10000;
+    slideHandle = setTimeout(function() {
+      if (videoActive) return;
+      const next = (idx + 1) % stage.length;
+      stage.goTo(next);
+      scheduleNext(stage, next);
+    }, dur);
+  }
+
+  // ── Show video ────────────────────────────────────────
+  function showVideo() {
+    videoActive = true;
+    if (slideHandle) { clearTimeout(slideHandle); slideHandle = null; }
+    if (modeHandle)  { clearTimeout(modeHandle);  modeHandle  = null; }
+
+    const overlay = document.getElementById('video-overlay');
+    const frame   = document.getElementById('video-frame');
+    frame.src = VIDEO_URL;
+    overlay.style.display = 'block';
+    void overlay.offsetHeight;
+    overlay.style.transition = 'opacity ' + (FADE_MS / 1000) + 's ease';
+    overlay.style.opacity = '1';
+
+    // Fallback timer in case videoEnded message never arrives
+    modeHandle = setTimeout(hideVideo, VIDEO_MS);
+  }
+
+  // ── Hide video, return to slides ──────────────────────
+  function hideVideo() {
+    if (!videoActive) return;
+    if (modeHandle) { clearTimeout(modeHandle); modeHandle = null; }
+
+    // Reset to slide 1 BEFORE fade so it's visible underneath as overlay fades
+    const stage = document.querySelector('deck-stage');
+    if (stage) { stage.goTo(0); }
+
+    const overlay = document.getElementById('video-overlay');
+    overlay.style.transition = 'opacity ' + (FADE_MS / 1000) + 's ease';
+    overlay.style.opacity = '0';
+
+    setTimeout(function() {
+      overlay.style.display = 'none';
+      document.getElementById('video-frame').src = '';
+      videoActive = false;
+
+      if (stage) { scheduleNext(stage, 0); }
+      modeHandle = setTimeout(showVideo, SLIDE_CYCLE_MS);
+    }, FADE_MS);
+  }
+
+  // ── Listen for video-ended signal from iframe ─────────
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'videoEnded' && videoActive) {
+      hideVideo();
+    }
+  });
+
+  // ── Boot ──────────────────────────────────────────────
+  customElements.whenDefined('deck-stage').then(function() {
+    const stage = document.querySelector('deck-stage');
+    if (!stage) return;
+    window.postMessage({ __omelette_presenting: true }, '*');
+    setTimeout(function() {
+      scheduleNext(stage, stage.index);
+      modeHandle = setTimeout(showVideo, SLIDE_CYCLE_MS);
+    }, 800);
+  });
+})();
+</script>
+
+</body>
+</html>
