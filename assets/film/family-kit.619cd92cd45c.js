@@ -1,0 +1,343 @@
+/* South Court reception film — the family-office frame.
+ *
+ * Closed state, "the house": four slim columns, one per company in its own
+ * colour, between a lintel and a base line, centred on the paper field.
+ * Every scene starts and ends on exactly this frame. FO.closed() draws it
+ * static (the player keeps it underneath every scene), so the loop plays as
+ * one film with no cuts.
+ *
+ * A chapter opens its company's column into a "room" (FO.room): first wide,
+ * then tall, leaving a paper margin all round; it closes the same way back.
+ * Motion runs on HK.track (compositions/_kit/kit.js) so every frame can be
+ * seeked exactly for the MP4 master.
+ */
+(function () {
+  const W = 1920, H = 1080, M = 96;
+  const COL = { w: 40, gap: 28, top: 340, bottom: 740 };
+  const N = 4;
+  const SPAN = N * COL.w + (N - 1) * COL.gap;
+  const X0 = (W - SPAN) / 2;
+  const LINTEL = { h: 6, over: 30, gap: 20 };
+  const ROOM = { left: M, top: M, right: W - M, bottom: H - M };
+
+  const FO = { W, H, M, COL, ROOM, LINTEL };
+  FO.colX = (i) => X0 + i * (COL.w + COL.gap);
+  FO.colCentre = (i) => FO.colX(i) + COL.w / 2;
+  FO.lintelBox = (which) => ({
+    left: X0 - LINTEL.over,
+    width: SPAN + 2 * LINTEL.over,
+    top: which === 'top' ? COL.top - LINTEL.gap - LINTEL.h : COL.bottom + LINTEL.gap,
+    height: LINTEL.h,
+  });
+
+  const box = (cls, b, colour) => {
+    const e = document.createElement('div');
+    e.className = cls;
+    e.style.cssText = `position:absolute;left:${b.left}px;top:${b.top}px;width:${b.width}px;height:${b.height}px;background:${colour}`;
+    return e;
+  };
+
+  /* The house: columns + lintels as plain boxes. Returns the elements so a
+   * scene (family, close) can animate them; FO.closed() leaves them still. */
+  FO.house = function (stage, colours) {
+    const layer = document.createElement('div');
+    layer.className = 'house';
+    layer.style.cssText = 'position:absolute;inset:0';
+    const lintels = ['top', 'bottom'].map((w) => box('lintel ' + w, FO.lintelBox(w), 'var(--ink)'));
+    const cols = colours.map((c, i) => box('col', { left: FO.colX(i), top: COL.top, width: COL.w, height: COL.bottom - COL.top }, c));
+    layer.append(...lintels, ...cols);
+    stage.append(layer);
+    return { layer, cols, lintels };
+  };
+
+  FO.closed = (stage, colours) => FO.house(stage, colours);
+
+  /* A company's column opens into a room in its own colour.
+   * Horizontal (outer clip) and vertical (inner clip) run on separate
+   * easings, like the Haus+ doors. Content appended to `el` is laid out in
+   * stage coordinates and clipped by the room.
+   * o.x0/o.x1 open it from another slot instead of column i: a festival wish
+   * opens from the gap at the heart of the house (x0 = x1 = 960, zero width,
+   * so the first and last frames are exactly the closed house). */
+  FO.timing = (D) => ({
+    hOpen: 400, hOpenDur: 1100,
+    vOpen: 1100, vOpenDur: 1000,
+    vClose: D - 2300, vCloseDur: 900,
+    hClose: D - 1700, hCloseDur: 1200,
+    contentIn: 2100,
+    contentOut: D - 2900, // content has left (rise exit ~550 ms) before the room starts to close
+  });
+
+  FO.room = function (stage, i, colour, o = {}) {
+    const t = FO.timing(HK.duration);
+    const outer = document.createElement('div');
+    const inner = document.createElement('div');
+    outer.className = 'room-outer';
+    inner.className = 'room';
+    outer.style.cssText = `position:absolute;inset:0;z-index:${o.z ?? 2}`;
+    inner.style.cssText = `position:absolute;inset:0;overflow:hidden;background:${colour}`;
+    outer.append(inner);
+    stage.append(outer);
+
+    const x0 = o.x0 ?? FO.colX(i), x1 = o.x1 ?? x0 + COL.w;
+    const hx = (l, r) => `inset(0px ${W - r}px 0px ${l}px)`;
+    HK.track(outer, [
+      { t: 0, clipPath: hx(x0, x1) },
+      { t: t.hOpen, clipPath: hx(x0, x1), ease: 'inOut' },
+      { t: t.hOpen + t.hOpenDur, clipPath: hx(ROOM.left, ROOM.right) },
+      { t: t.hClose, clipPath: hx(ROOM.left, ROOM.right), ease: 'inOut' },
+      { t: t.hClose + t.hCloseDur, clipPath: hx(x0, x1) },
+    ]);
+    const vy = (top, bot) => `inset(${top}px 0px ${H - bot}px 0px)`;
+    HK.track(inner, [
+      { t: 0, clipPath: vy(COL.top, COL.bottom) },
+      { t: t.vOpen, clipPath: vy(COL.top, COL.bottom), ease: 'out' },
+      { t: t.vOpen + t.vOpenDur, clipPath: vy(ROOM.top, ROOM.bottom) },
+      { t: t.vClose, clipPath: vy(ROOM.top, ROOM.bottom), ease: 'inOut' },
+      { t: t.vClose + t.vCloseDur, clipPath: vy(COL.top, COL.bottom) },
+    ]);
+    return { el: inner, timing: t };
+  };
+
+  /* Not on screen (Sahil removed it 2026-10-09); kept for reuse.
+   * Date and time (IST) in the bottom paper margin, right-aligned with the room
+   * edge. It lives outside the scenes (the player keeps it above them), so it
+   * never moves or blinks when one scene hands over to the next.
+   * o.at: a fixed Date for stills and masters; otherwise it follows the clock. */
+  FO.clock = function (stage, o = {}) {
+    const tz = o.tz || 'Asia/Kolkata';
+    const e = document.createElement('div');
+    e.className = 'abs label clock';
+    stage.append(e);
+    const fmt = new Intl.DateTimeFormat('en-GB', { timeZone: tz, weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit', hour12: true });
+    const text = (d) => {
+      const p = Object.fromEntries(fmt.formatToParts(d).map((x) => [x.type, x.value]));
+      return `${p.weekday} ${p.day} ${p.month} · ${p.hour}:${p.minute} ${(p.dayPeriod || '').toUpperCase()}`;
+    };
+    const tick = () => { const t = text(o.at || new Date()); if (e.textContent !== t) e.textContent = t; };
+    tick();
+    if (!o.at) setInterval(tick, 1000);
+    return e;
+  };
+
+  /* Festival dressing (content/festivals.yaml `dress`): a quiet touch in the
+   * paper margins while a festival's window is on. Like the clock, it lives
+   * outside the scenes (the player keeps it above them), so the rooms never
+   * change and the seam check is untouched. It stays clear of the margin
+   * points tools/test_player.py samples (x 40/960/1880).
+   *   FO.dress(stage, kind) -> element (or null for an unknown kind)
+   * Flames flicker gently (scale only, no flashes) on their own endless
+   * animations; __seek freezes them like everything else for stills. */
+  const NS = 'http://www.w3.org/2000/svg';
+  const svgEl = (tag, attrs = {}) => {
+    const e = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    return e;
+  };
+  // Deterministic jitter, so every render and every TV shows the same flicker
+  const rand = (seed) => { let s = seed * 9301 + 49297; return () => ((s = (s * 9301 + 49297) % 233280) / 233280); };
+
+  /* One clay diya with its flame, base centre at (0, 0), about 46 x 44 px. */
+  FO.diya = function (parent, x, y, seed = 1, o = {}) {
+    const g = svgEl('g', { transform: `translate(${x} ${y})` });
+    const glow = svgEl('circle', { cx: 0, cy: -24, r: 22, fill: o.glow || 'url(#diya-glow)' });
+    const bowl = svgEl('path', { d: 'M-23 -9 C-21 1 -11 4 0 4 C11 4 20 1 23 -9 L18 -9 C10 -6 -10 -6 -18 -9 Z', fill: o.clay || '#A8522D' });
+    const rim = svgEl('path', { d: 'M-23 -9 C-14 -12 14 -12 23 -9 C14 -6 -14 -6 -23 -9 Z', fill: o.rim || '#7C3A1E' });
+    const flame = svgEl('path', { d: 'M0 -40 C5 -32 7 -24 4 -17 C2.5 -13.5 -2.5 -13.5 -4 -17 C-7 -24 -5 -32 0 -40 Z', fill: o.flame || '#EE8A2A' });
+    const core = svgEl('path', { d: 'M0 -31 C2.6 -26 3.2 -21 1.7 -17.5 C0.8 -16 -0.8 -16 -1.7 -17.5 C-3.2 -21 -2.6 -26 0 -31 Z', fill: o.core || '#FFD36A' });
+    const fl = svgEl('g');
+    fl.append(flame, core);
+    fl.style.cssText = 'transform-box: fill-box; transform-origin: 50% 100%';
+    g.append(glow, bowl, rim, fl);
+    parent.append(g);
+    const r = rand(seed), kf = [];
+    for (let k = 0; k <= 8; k++) {
+      const a = k === 8 ? kf[0] : { transform: `scale(${(0.94 + r() * 0.1).toFixed(3)}, ${(0.9 + r() * 0.16).toFixed(3)}) rotate(${(r() * 6 - 3).toFixed(2)}deg)` };
+      kf.push(a);
+    }
+    fl.animate(kf, { duration: 1800 + r() * 900, iterations: Infinity, easing: 'ease-in-out', delay: -r() * 2000 });
+    return g;
+  };
+
+  /* Motifs for the other festivals: each about 46 px, base centre at (x, y).
+   * Gentle life only (scale or a small sway, never spin, bounce or flash). */
+  const live = (e, seed, frames, origin = '50% 100%', base = 2400) => {
+    e.style.cssText = `transform-box: fill-box; transform-origin: ${origin}`;
+    const r = rand(seed);
+    e.animate(frames, { duration: base + r() * 1200, iterations: Infinity, easing: 'ease-in-out', delay: -r() * 3000, direction: 'alternate' });
+  };
+  const sway = (deg) => [{ transform: `rotate(${-deg}deg)` }, { transform: `rotate(${deg}deg)` }];
+  const breathe = (a, b) => [{ transform: `scale(${a})` }, { transform: `scale(${b})` }];
+  const OUTLINE = '#BDB5A6'; // keeps white parts visible on paper
+
+  const MOTIF = {
+    star(svg, x, y, i) {
+      const g = svgEl('g', { transform: `translate(${x} ${y - 22})` });
+      const pts = [...Array(10)].map((_, k) => { const a = (Math.PI / 5) * k - Math.PI / 2, rr = k % 2 ? 7 : 17; return `${(rr * Math.cos(a)).toFixed(1)},${(rr * Math.sin(a)).toFixed(1)}`; });
+      const s = svgEl('polygon', { points: pts.join(' '), fill: i % 3 === 1 ? '#C9A227' : '#E2B04A' });
+      g.append(s);
+      svg.append(g);
+      live(s, i + 7, breathe(0.86, 1.06), '50% 50%');
+    },
+    kite(svg, x, y, i, palette) {
+      const c = palette[i % palette.length];
+      const g = svgEl('g', { transform: `translate(${x} ${y})` });
+      const k = svgEl('g');
+      k.append(
+        svgEl('path', { d: 'M0 -2 C5 4 -5 8 2 14', fill: 'none', stroke: OUTLINE, 'stroke-width': 1.5 }),
+        svgEl('polygon', { points: '0,-50 15,-30 0,-6 -15,-30', fill: c, stroke: OUTLINE, 'stroke-width': 1.2 }),
+        svgEl('line', { x1: -15, y1: -30, x2: 15, y2: -30, stroke: 'rgba(26,23,20,0.25)', 'stroke-width': 1.2 }),
+        svgEl('line', { x1: 0, y1: -50, x2: 0, y2: -6, stroke: 'rgba(26,23,20,0.25)', 'stroke-width': 1.2 }),
+      );
+      g.append(k);
+      svg.append(g);
+      live(k, i + 11, sway(5), '50% 100%', 2800);
+    },
+    flower(svg, x, y, i, colours, centre = '#B5521E') {
+      const c = colours[i % colours.length];
+      const g = svgEl('g', { transform: `translate(${x} ${y - 22})` });
+      const f = svgEl('g');
+      for (let k = 0; k < 10; k++) {
+        const a = (Math.PI / 5) * k;
+        f.append(svgEl('circle', { cx: (10 * Math.cos(a)).toFixed(1), cy: (10 * Math.sin(a)).toFixed(1), r: 6.5, fill: c, stroke: c === '#FFFFFF' ? OUTLINE : 'none', 'stroke-width': 1 }));
+      }
+      f.append(svgEl('circle', { r: 6, fill: centre }));
+      g.append(f);
+      svg.append(g);
+      live(f, i + 3, breathe(0.95, 1.04), '50% 50%', 3000);
+    },
+    pookalam(svg, x, y, i) {
+      const g = svgEl('g', { transform: `translate(${x} ${y - 22})` });
+      const f = svgEl('g');
+      [[20, '#EE8A2A'], [15, '#F4C430'], [10, '#FFFFFF'], [5.5, '#B8322A']].forEach(([r, c]) =>
+        f.append(svgEl('circle', { r, fill: c, stroke: c === '#FFFFFF' ? OUTLINE : 'none', 'stroke-width': 1 })));
+      g.append(f);
+      svg.append(g);
+      live(f, i + 5, breathe(0.96, 1.03), '50% 50%', 3200);
+    },
+    gulal(svg, x, y, i) {
+      const cs = ['#E8559A', '#F5C518', '#3DBE6C', '#3D7FE0', '#F28C28'];
+      const g = svgEl('g', { transform: `translate(${x} ${y - 22})` });
+      [[-9, 4, 13, cs[i % 5]], [8, 2, 12, cs[(i + 2) % 5]], [0, -8, 11, cs[(i + 4) % 5]]].forEach(([cx, cy, r, c], k) => {
+        const p = svgEl('circle', { cx, cy, r, fill: c, opacity: 0.78 });
+        g.append(p);
+        live(p, i * 3 + k, breathe(0.88, 1.08), '50% 50%', 2600);
+      });
+      svg.append(g);
+    },
+    wheat(svg, x, y, i) {
+      const g = svgEl('g', { transform: `translate(${x} ${y})` });
+      const w = svgEl('g');
+      w.append(svgEl('path', { d: 'M0 4 C1 -14 -1 -30 1 -52', fill: 'none', stroke: '#B8862E', 'stroke-width': 2 }));
+      for (let k = 0; k < 5; k++) {
+        const yy = -24 - k * 6.2;
+        w.append(svgEl('ellipse', { cx: -4.2, cy: yy, rx: 3, ry: 5.5, fill: '#D9A441', transform: `rotate(-28 -4.2 ${yy})` }),
+          svgEl('ellipse', { cx: 4.6, cy: yy - 2, rx: 3, ry: 5.5, fill: '#C8922F', transform: `rotate(28 4.6 ${yy - 2})` }));
+      }
+      w.append(svgEl('ellipse', { cx: 1, cy: -55, rx: 2.6, ry: 5, fill: '#D9A441' }));
+      g.append(w);
+      svg.append(g);
+      live(w, i + 13, sway(3), '50% 100%', 3000);
+    },
+    feather(svg, x, y, i) {
+      const g = svgEl('g', { transform: `translate(${x} ${y}) rotate(${i % 2 ? 10 : -10})` });
+      const f = svgEl('g');
+      f.append(
+        svgEl('path', { d: 'M0 6 C1 -10 0 -30 0 -50', fill: 'none', stroke: '#6B7F3A', 'stroke-width': 1.8 }),
+        svgEl('ellipse', { cx: 0, cy: -34, rx: 10, ry: 19, fill: '#3E8E5A' }),
+        svgEl('ellipse', { cx: 0, cy: -38, rx: 6.5, ry: 8.5, fill: '#D9A93A' }),
+        svgEl('ellipse', { cx: 0, cy: -38, rx: 4.6, ry: 6.2, fill: '#1F6FB2' }),
+        svgEl('ellipse', { cx: 0, cy: -37, rx: 2.4, ry: 3.2, fill: '#132B4F' }),
+      );
+      g.append(f);
+      svg.append(g);
+      live(f, i + 17, sway(4), '50% 100%', 3200);
+    },
+  };
+
+  // A row of n motifs across the room's width, in the bottom margin
+  const row = (svg, n, draw) => {
+    const pitch = (ROOM.right - ROOM.left) / n;
+    for (let k = 0; k < n; k++) draw(ROOM.left + pitch * (k + 0.5), H - 30, k);
+  };
+  const glowDefs = (svg) => {
+    const defs = svgEl('defs');
+    const grad = svgEl('radialGradient', { id: 'diya-glow' });
+    grad.append(svgEl('stop', { offset: '0', 'stop-color': '#F7B548', 'stop-opacity': '0.32' }),
+      svgEl('stop', { offset: '1', 'stop-color': '#F7B548', 'stop-opacity': '0' }));
+    defs.append(grad);
+    svg.append(defs);
+  };
+  const TRICOLOUR = ['#FF9933', '#FFFFFF', '#138808'];
+
+  const DRESS = {
+    // Diwali, Gurpurab: a row of lit diyas along the bottom margin, like lamps on a threshold
+    diyas(svg) {
+      glowDefs(svg);
+      row(svg, 12, (x, y, k) => FO.diya(svg, x, y, k + 1));
+    },
+    // Navratri: nine diyas, one more lit each night (o.lit, 1-9); on Dussehra all nine glow
+    navratri(svg, o) {
+      glowDefs(svg);
+      const lit = Math.max(0, Math.min(9, o.lit ?? 9));
+      row(svg, 9, (x, y, k) => {
+        const d = FO.diya(svg, x, y, k + 1);
+        if (k >= lit) d.querySelectorAll('circle, g').forEach((e) => e.remove()); // unlit: the bowl only
+      });
+    },
+    stars: (svg) => row(svg, 12, (x, y, k) => MOTIF.star(svg, x, y, k)),
+    kites: (svg) => row(svg, 12, (x, y, k) => MOTIF.kite(svg, x, y, k, ['#E4572E', '#F2B134', '#2A9D8F', '#3B6FB6', '#C2185B'])),
+    'kites-tricolour': (svg) => row(svg, 12, (x, y, k) => MOTIF.kite(svg, x, y, k, TRICOLOUR)),
+    tricolour: (svg) => row(svg, 12, (x, y, k) => MOTIF.flower(svg, x, y, k, TRICOLOUR, '#000080')),
+    marigolds: (svg) => row(svg, 12, (x, y, k) => MOTIF.flower(svg, x, y, k, ['#F08A24', '#F6C22B'])),
+    pookalam: (svg) => row(svg, 12, (x, y, k) => MOTIF.pookalam(svg, x, y, k)),
+    gulal: (svg) => row(svg, 12, (x, y, k) => MOTIF.gulal(svg, x, y, k)),
+    wheat: (svg) => row(svg, 12, (x, y, k) => MOTIF.wheat(svg, x, y, k)),
+    peacock: (svg) => row(svg, 12, (x, y, k) => MOTIF.feather(svg, x, y, k)),
+    // Raksha Bandhan: one thread along the bottom margin, with a rakhi rosette in each slot
+    rakhi(svg) {
+      svg.append(svgEl('path', { d: `M${ROOM.left} ${H - 52} L${ROOM.right} ${H - 52}`, stroke: '#C9A227', 'stroke-width': 2.5, fill: 'none' }));
+      row(svg, 12, (x, y, k) => MOTIF.flower(svg, x, y, k, ['#E4572E', '#F08A24'], '#E2B04A'));
+    },
+    // Gudi Padwa and Ugadi: a toran of mango leaves and marigolds across the TOP margin, as over a door
+    toran(svg) {
+      const y0 = 14, n = 24, pitch = (ROOM.right - ROOM.left) / n;
+      svg.append(svgEl('path', { d: `M${ROOM.left} ${y0} L${ROOM.right} ${y0}`, stroke: '#6B8E23', 'stroke-width': 2.5, fill: 'none' }));
+      for (let k = 0; k < n; k++) {
+        const x = ROOM.left + pitch * (k + 0.5);
+        if (k % 2) { MOTIF.flower(svg, x, y0 + 40, k, ['#F08A24', '#F6C22B']); continue; }
+        const g = svgEl('g', { transform: `translate(${x} ${y0})` });
+        const leaf = svgEl('path', { d: 'M0 0 C9 12 9 34 0 52 C-9 34 -9 12 0 0 Z', fill: k % 4 ? '#5C8A2E' : '#79A33A' });
+        g.append(leaf);
+        svg.append(g);
+        live(leaf, k + 19, sway(3), '50% 0%', 3200);
+      }
+    },
+  };
+
+  FO.dress = function (stage, kind, o = {}) {
+    if (!DRESS[kind]) return null;
+    const svg = svgEl('svg', { width: W, height: H, viewBox: `0 0 ${W} ${H}` });
+    svg.classList.add('dress', kind);
+    svg.style.cssText = 'position:absolute;inset:0;overflow:hidden;pointer-events:none';
+    DRESS[kind](svg, o);
+    stage.append(svg);
+    return svg;
+  };
+
+  /* Lines that go out of date: {text, until} shows `text` up to and including `until`
+   * (YYYY-MM-DD, IST) and disappears after it. FO.current(scene, today) returns a copy of a
+   * scene with every such line resolved; without `today` (stills, masters) every line shows. */
+  FO.current = function (node, today) {
+    if (Array.isArray(node)) return node.map((x) => FO.current(x, today)).filter((x) => x != null);
+    if (node && typeof node === 'object') {
+      if ('until' in node && 'text' in node && Object.keys(node).length === 2) return !today || today <= node.until ? node.text : null;
+      const out = {};
+      for (const [key, val] of Object.entries(node)) { const r = FO.current(val, today); if (r != null) out[key] = r; }
+      return out;
+    }
+    return node;
+  };
+
+  window.FO = FO;
+})();

@@ -1,0 +1,149 @@
+/* South Court reception film — base styles and scene layouts (1920x1080).
+   The family-office frame uses Fraunces (headlines) and Inter (body, labels):
+   deliberately none of the four companies' own type (Oswald is the Haus+ logo
+   type). Inside its chapter each company keeps its own colours and logo;
+   Haus+ also keeps its own type (Bricolage Grotesque, Manrope). */
+
+@font-face { font-family: "Fraunces"; src: url("__BASE__fraunces-variable.f33f1c09afd9.woff") format("woff"); font-weight: 100 900; font-style: normal; }
+@font-face { font-family: "Fraunces"; src: url("__BASE__fraunces-italic-variable.3b4e082778e4.woff") format("woff"); font-weight: 100 900; font-style: italic; }
+@font-face { font-family: "Inter"; src: url("__BASE__inter-variable.614465598779.woff") format("woff"); font-weight: 100 900; }
+@font-face { font-family: "Bricolage Grotesque"; src: url("__BASE__bricolagegrotesque-variable.db4fff20a562.woff") format("woff"); font-weight: 200 800; font-stretch: 75% 100%; }
+@font-face { font-family: "Manrope"; src: url("__BASE__manrope-variable.cfb685422305.woff") format("woff"); font-weight: 200 800; }
+/* Festival greetings in their own script (each subset by the build to exactly the greetings in the page) */
+@font-face { font-family: "Tiro Devanagari Hindi"; src: url("__BASE__tirodevanagarihindi-regular.2b894bc3a8bc.woff") format("woff"); font-weight: 400; }
+@font-face { font-family: "Tiro Devanagari Marathi"; src: url("__BASE__tirodevanagarimarathi-regular.19950d007a77.woff") format("woff"); font-weight: 400; }
+@font-face { font-family: "Tiro Gurmukhi"; src: url("__BASE__tirogurmukhi-regular.f4f98ed334c8.woff") format("woff"); font-weight: 400; }
+@font-face { font-family: "Tiro Bangla"; src: url("__BASE__tirobangla-regular.19f454c7aec2.woff") format("woff"); font-weight: 400; }
+@font-face { font-family: "Tiro Tamil"; src: url("__BASE__tirotamil-regular.e5fddcc73066.woff") format("woff"); font-weight: 400; }
+@font-face { font-family: "Tiro Telugu"; src: url("__BASE__tirotelugu-regular.bda2a0fbd198.woff") format("woff"); font-weight: 400; }
+@font-face { font-family: "Tiro Kannada"; src: url("__BASE__tirokannada-regular.946a66022a16.woff") format("woff"); font-weight: 400; }
+@font-face { font-family: "Noto Serif Malayalam"; src: url("__BASE__notoserifmalayalam-variable.4240efa0238f.woff") format("woff"); font-weight: 100 900; }
+
+:root {
+  /* Family-office frame */
+  --paper: #F4F1EA;
+  --ink: #1A1714;
+  --ink-soft: rgba(26, 23, 20, 0.62);
+  /* Company colours (sampled from each logo / material scheme) */
+  --genesis: #003366;
+  --genesis-accent: #FF6600;
+  --endurance: #181818;
+  --endurance-grey: #909090;
+  --endurance-accent: #E0742B;
+  --saga: #AA6847;
+  --haus: #5A0A2D;
+  /* Haus+ palette (its own brand guidelines) */
+  --mitti: #5A0A2D;
+  --indigo: #82B4FF;
+  --concrete: #EFEFEF;
+  --white: #FFFFFF;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+
+.stage { position: absolute; inset: 0; overflow: hidden; background: var(--paper); color: var(--ink); }
+.abs { position: absolute; }
+
+.serif { font-family: "Fraunces", serif; font-weight: 400; font-optical-sizing: auto; line-height: 1.02; letter-spacing: -0.01em; }
+.serif em, .serif .it { font-style: italic; font-weight: 350; }
+.sans { font-family: "Inter", sans-serif; font-weight: 500; line-height: 1.25; }
+.label { font-family: "Inter", sans-serif; font-weight: 600; font-size: 30px; letter-spacing: 0.18em; text-transform: uppercase; line-height: 1.2; }
+.mask { overflow: hidden; }
+.mask > * { display: block; }
+
+/* ---------------- Date and time: bottom paper margin, right-aligned with the room edge ---------------- */
+.clock { right: 96px; bottom: 30px; color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; will-change: transform; } /* own layer: identical anti-aliasing in every scene */
+
+/* ---------------- Family office (opening) and Close: inscriptions around the house ---------------- */
+.inscription { left: 0; right: 0; text-align: center; }
+.inscription.above { top: 118px; font-size: 156px; }
+.inscription.below { top: 812px; font-size: 92px; }
+.inscription.below.it { font-style: italic; font-weight: 350; }
+.close-line { left: 0; right: 0; top: 806px; text-align: center; font-size: 52px; color: var(--ink); }
+.close-address { left: 0; right: 0; top: 896px; text-align: center; color: var(--ink-soft); }
+.house-label { top: 790px; width: 440px; margin-left: -220px; text-align: center; }
+.house-label .label { color: var(--ink-soft); font-size: 30px; }
+.house-label .name { font-family: "Fraunces", serif; font-weight: 400; font-size: 52px; line-height: 1.1; margin-top: 14px; }
+
+/* ---------------- Chapters (Genesis, Endurance): logo + eyebrow, headline, rotating beats ---------------- */
+.chapter { color: var(--white); }
+.chapter .logo { left: 192px; top: 176px; }
+.chapter .logo img { display: block; }
+.chapter .topright { right: 192px; top: 186px; text-align: right; }
+.chapter .eyebrow { color: var(--accent); }
+.chapter .web { font-family: "Inter", sans-serif; font-weight: 500; font-size: 36px; margin-top: 18px; color: rgba(255, 255, 255, 0.82); }
+.chapter .headline { left: 192px; top: 330px; font-size: 156px; }
+.chapter .headline .it { color: var(--accent); }
+.chapter .beat { left: 192px; top: 700px; }
+.chapter .beat.line { font-family: "Inter", sans-serif; font-weight: 500; font-size: 58px; line-height: 1.2; max-width: 1040px; text-wrap: balance; color: rgba(255, 255, 255, 0.92); }
+.chapter .beat.stats { display: flex; gap: 120px; }
+.chapter .stat .value { font-family: "Fraunces", serif; font-weight: 400; font-size: 128px; line-height: 1; color: var(--accent); }
+.chapter .stat .value .sym { font-family: "Inter", sans-serif; font-weight: 300; font-size: 0.62em; vertical-align: 0.18em; margin: 0 0.04em; }
+.chapter .stat .label { margin-top: 18px; color: rgba(255, 255, 255, 0.78); }
+.chapter .motif { right: 96px; bottom: 96px; }
+.chapter .motif svg { display: block; overflow: visible; }
+
+/* ---------------- Saga Hotels: Calangute renders, then destinations ---------------- */
+.saga .photo { position: absolute; left: 96px; top: 96px; width: 1728px; height: 888px; overflow: hidden; }
+.saga .photo img { position: absolute; left: 0; top: 0; max-width: none; }
+.saga .block { left: 192px; bottom: 192px; background: var(--paper); color: var(--ink); padding: 44px 56px 40px; max-width: 1060px; }
+.saga .block .label { color: var(--saga); }
+.saga .block .h { text-wrap: balance; }
+.saga .block .h { font-family: "Fraunces", serif; font-weight: 400; font-size: 84px; line-height: 1.04; margin-top: 18px; }
+.saga .block .l { font-family: "Inter", sans-serif; font-weight: 500; font-size: 44px; margin-top: 16px; color: var(--ink); }
+.saga .block .cap { font-family: "Inter", sans-serif; font-weight: 500; font-size: 22px; margin-top: 22px; color: var(--ink-soft); }
+.saga .block .swap { display: grid; }
+.saga .block .swap > * { grid-area: 1 / 1; }
+.saga .dest-head { left: 192px; top: 200px; color: rgba(255, 255, 255, 0.86); }
+.saga .dests { left: 192px; right: 192px; top: 420px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 64px; color: var(--white); }
+.saga .dest .place { font-family: "Fraunces", serif; font-weight: 400; font-size: 104px; line-height: 1; }
+.saga .dest .line { font-family: "Inter", sans-serif; font-weight: 500; font-size: 44px; line-height: 1.2; margin-top: 22px; color: rgba(255, 255, 255, 0.9); text-wrap: balance; }
+.saga .dest .rule { width: 64px; height: 6px; background: var(--white); margin-bottom: 34px; }
+
+/* ---------------- Festival wish: the family office's ink room, signed by three ---------------- */
+.wish { color: var(--white); }
+.wish .art { position: absolute; left: 96px; top: 96px; width: 1728px; height: 888px; overflow: hidden; }
+.wish .art img { position: absolute; left: 0; top: 0; max-width: none; }
+.wish .greet { left: 192px; top: 250px; }
+.wish .greet .headline { font-size: 168px; line-height: 0.98; }
+.wish .greet .locals { margin-top: 40px; color: var(--accent); }
+.wish .greet .local { font-family: "Tiro Devanagari Hindi", serif; font-size: 104px; line-height: 1.35; }
+.wish .greet .locals.n2 .local { font-size: 76px; }
+.wish .greet .locals.n3 .local, .wish .greet .locals.n4 .local { font-size: 58px; line-height: 1.45; }
+.wish .local.font-deva-mr { font-family: "Tiro Devanagari Marathi", serif; }
+.wish .local.font-guru { font-family: "Tiro Gurmukhi", serif; }
+.wish .local.font-beng { font-family: "Tiro Bangla", serif; }
+.wish .local.font-taml { font-family: "Tiro Tamil", serif; }
+.wish .local.font-telu { font-family: "Tiro Telugu", serif; }
+.wish .local.font-knda { font-family: "Tiro Kannada", serif; }
+.wish .local.font-mlym { font-family: "Noto Serif Malayalam", serif; font-weight: 500; }
+.wish .signoff { left: 96px; right: 96px; top: 300px; text-align: center; }
+.wish .signoff .sline { font-size: 76px; line-height: 1.12; max-width: 1240px; margin: 0 auto; text-wrap: balance; }
+.wish .signoff .slabel { margin-top: 92px; color: var(--accent); }
+.wish .signoff .logos { display: flex; justify-content: center; align-items: center; margin-top: 48px; }
+.wish .signoff .lg { flex: none; }
+.wish .signoff .sep { width: 2px; height: 96px; margin: 0 72px; background: rgba(255, 255, 255, 0.28); }
+.dress { z-index: 3; }
+
+/* ---------------- Haus+: its own brand inside its room ---------------- */
+.haus { color: var(--white); }
+.haus .display { font-family: "Bricolage Grotesque", sans-serif; font-stretch: 75%; font-weight: 700; line-height: 0.92; text-transform: uppercase; }
+.haus .hlabel { font-family: "Manrope", sans-serif; font-weight: 700; font-size: 30px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--indigo); }
+.haus .wm { left: 192px; top: 180px; }
+.haus .topright { right: 192px; top: 190px; text-align: right; }
+.haus .web { font-family: "Manrope", sans-serif; font-weight: 600; font-size: 36px; margin-top: 18px; color: var(--concrete); }
+.haus .headline { left: 192px; top: 380px; font-size: 150px; }
+.haus .headline .accent { color: var(--indigo); }
+.haus .saket { left: 192px; top: 400px; }
+.haus .saket .l { font-family: "Manrope", sans-serif; font-weight: 600; font-size: 48px; margin-top: 34px; color: var(--concrete); }
+.haus .saket .when { font-family: "Manrope", sans-serif; font-weight: 700; font-size: 48px; margin-top: 10px; color: var(--indigo); }
+.haus .shot { left: 1004px; top: 350px; width: 724px; height: 538px; overflow: hidden; }
+.haus .shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.haus .shot .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 16px; font-family: "Manrope", sans-serif; font-weight: 600; font-size: 20px; color: var(--white); background: rgba(0, 0, 0, 0.35); }
+.haus .next-head { left: 192px; top: 380px; }
+.haus .next { left: 192px; right: 192px; top: 470px; display: flex; gap: 200px; }
+.haus .city { display: flex; align-items: center; gap: 40px; }
+.haus .city .mark { overflow: hidden; }
+.haus .city .names { font-family: "Bricolage Grotesque", sans-serif; font-stretch: 75%; font-weight: 700; font-size: 84px; line-height: 1.05; text-transform: uppercase; }
+.haus .city .cname { font-family: "Manrope", sans-serif; font-weight: 600; font-size: 40px; color: var(--indigo); margin-bottom: 8px; text-transform: none; }
