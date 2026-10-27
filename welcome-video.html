@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reception Loop · Haus+</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100vw; height: 100vh; max-width: 100%; overflow: hidden; background: #000; }
+video {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  display: block;
+}
+</style>
+</head>
+<body>
+<video autoplay muted playsinline>
+  <source src="haus_delhi_hero_15s_v2.mp4" type="video/mp4">
+</video>
+<script>
+const v = document.querySelector('video');
+window.addEventListener('message', () => { v.muted = false; v.play().catch(()=>{}); });
+document.addEventListener('click', () => { v.muted = false; v.play().catch(()=>{}); });
+v.addEventListener('ended', () => {
+  window.parent.postMessage({ type: 'videoEnded' }, '*');
+});
+</script>
+</body>
+</html>

@@ -1,33 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reception Loop · Haus+</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="southcourt-redirect" content="group-profile">
+<title>505/506 DLF South Court</title>
+<!-- The site's main address opens the reception film (garg94sahil.github.io/southcourt/ ->
+     group-profile). Published by tools/publish_pages.py from apps/root-index.html. The old Haus+
+     welcome video that used to live here is welcome-video.html (the meeting deck still uses it). -->
+<meta http-equiv="refresh" content="0; url=group-profile">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { width: 100vw; height: 100vh; max-width: 100%; overflow: hidden; background: #000; }
-video {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  display: block;
-}
+  html, body { margin: 0; height: 100%; background: #F4F1EA; color: #1A1714; font: 500 18px/1.4 system-ui, sans-serif; }
+  a { position: fixed; left: 24px; bottom: 24px; color: inherit; }
 </style>
+<script>location.replace('group-profile' + location.search + location.hash);</script>
 </head>
 <body>
-<video autoplay muted playsinline>
-  <source src="haus_delhi_hero_15s_v2.mp4" type="video/mp4">
-</video>
-<script>
-const v = document.querySelector('video');
-window.addEventListener('message', () => { v.muted = false; v.play().catch(()=>{}); });
-document.addEventListener('click', () => { v.muted = false; v.play().catch(()=>{}); });
-v.addEventListener('ended', () => {
-  window.parent.postMessage({ type: 'videoEnded' }, '*');
-});
-</script>
+<a href="group-profile">Open the reception film</a>
 </body>
 </html>
