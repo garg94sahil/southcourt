@@ -4,20 +4,20 @@
    type). Inside its chapter each company keeps its own colours and logo;
    Haus+ also keeps its own type (Bricolage Grotesque, Manrope). */
 
-@font-face { font-family: "Fraunces"; src: url("__BASE__fraunces-variable.f33f1c09afd9.woff") format("woff"); font-weight: 100 900; font-style: normal; }
-@font-face { font-family: "Fraunces"; src: url("__BASE__fraunces-italic-variable.3b4e082778e4.woff") format("woff"); font-weight: 100 900; font-style: italic; }
-@font-face { font-family: "Inter"; src: url("__BASE__inter-variable.614465598779.woff") format("woff"); font-weight: 100 900; }
-@font-face { font-family: "Bricolage Grotesque"; src: url("__BASE__bricolagegrotesque-variable.db4fff20a562.woff") format("woff"); font-weight: 200 800; font-stretch: 75% 100%; }
-@font-face { font-family: "Manrope"; src: url("__BASE__manrope-variable.cfb685422305.woff") format("woff"); font-weight: 200 800; }
+@font-face { font-family: "Fraunces"; src: url("__BASE__fraunces-variable.7d73995dd823.woff") format("woff"); font-weight: 100 900; font-style: normal; }
+@font-face { font-family: "Fraunces"; src: url("__BASE__fraunces-italic-variable.3da5380525c1.woff") format("woff"); font-weight: 100 900; font-style: italic; }
+@font-face { font-family: "Inter"; src: url("__BASE__inter-variable.e6b5d4121162.woff") format("woff"); font-weight: 100 900; }
+@font-face { font-family: "Bricolage Grotesque"; src: url("__BASE__bricolagegrotesque-variable.17c9fe207239.woff") format("woff"); font-weight: 200 800; font-stretch: 75% 100%; }
+@font-face { font-family: "Manrope"; src: url("__BASE__manrope-variable.e8170adc1686.woff") format("woff"); font-weight: 200 800; }
 /* Festival greetings in their own script (each subset by the build to exactly the greetings in the page) */
-@font-face { font-family: "Tiro Devanagari Hindi"; src: url("__BASE__tirodevanagarihindi-regular.2b894bc3a8bc.woff") format("woff"); font-weight: 400; }
-@font-face { font-family: "Tiro Devanagari Marathi"; src: url("__BASE__tirodevanagarimarathi-regular.19950d007a77.woff") format("woff"); font-weight: 400; }
-@font-face { font-family: "Tiro Gurmukhi"; src: url("__BASE__tirogurmukhi-regular.f4f98ed334c8.woff") format("woff"); font-weight: 400; }
-@font-face { font-family: "Tiro Bangla"; src: url("__BASE__tirobangla-regular.19f454c7aec2.woff") format("woff"); font-weight: 400; }
-@font-face { font-family: "Tiro Tamil"; src: url("__BASE__tirotamil-regular.e5fddcc73066.woff") format("woff"); font-weight: 400; }
-@font-face { font-family: "Tiro Telugu"; src: url("__BASE__tirotelugu-regular.bda2a0fbd198.woff") format("woff"); font-weight: 400; }
-@font-face { font-family: "Tiro Kannada"; src: url("__BASE__tirokannada-regular.946a66022a16.woff") format("woff"); font-weight: 400; }
-@font-face { font-family: "Noto Serif Malayalam"; src: url("__BASE__notoserifmalayalam-variable.4240efa0238f.woff") format("woff"); font-weight: 100 900; }
+@font-face { font-family: "Tiro Devanagari Hindi"; src: url("__BASE__tirodevanagarihindi-regular.f7a6922e6e3c.woff") format("woff"); font-weight: 400; }
+@font-face { font-family: "Tiro Devanagari Marathi"; src: url("__BASE__tirodevanagarimarathi-regular.6f5f8294d68d.woff") format("woff"); font-weight: 400; }
+@font-face { font-family: "Tiro Gurmukhi"; src: url("__BASE__tirogurmukhi-regular.a45dd66c7ae6.woff") format("woff"); font-weight: 400; }
+@font-face { font-family: "Tiro Bangla"; src: url("__BASE__tirobangla-regular.9446bb49fbe2.woff") format("woff"); font-weight: 400; }
+@font-face { font-family: "Tiro Tamil"; src: url("__BASE__tirotamil-regular.dc029e79fe0c.woff") format("woff"); font-weight: 400; }
+@font-face { font-family: "Tiro Telugu"; src: url("__BASE__tirotelugu-regular.413504284805.woff") format("woff"); font-weight: 400; }
+@font-face { font-family: "Tiro Kannada"; src: url("__BASE__tirokannada-regular.76bbfbc31bbf.woff") format("woff"); font-weight: 400; }
+@font-face { font-family: "Noto Serif Malayalam"; src: url("__BASE__notoserifmalayalam-variable.d1621648778a.woff") format("woff"); font-weight: 100 900; }
 
 :root {
   /* Family-office frame */
