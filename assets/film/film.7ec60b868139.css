@@ -42,7 +42,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
 
-.stage { position: absolute; inset: 0; overflow: hidden; background: var(--paper); color: var(--ink); }
+.stage { position: absolute; top: 0; right: 0; bottom: 0; left: 0; overflow: hidden; background: var(--paper); color: var(--ink); }
 .abs { position: absolute; }
 
 .serif { font-family: "Fraunces", serif; font-weight: 400; font-optical-sizing: auto; line-height: 1.02; letter-spacing: -0.01em; }
@@ -77,7 +77,8 @@ html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--
 .chapter .headline .it { color: var(--accent); }
 .chapter .beat { left: 192px; top: 700px; }
 .chapter .beat.line { font-family: "Inter", sans-serif; font-weight: 500; font-size: 58px; line-height: 1.2; max-width: 1040px; text-wrap: balance; color: rgba(255, 255, 255, 0.92); }
-.chapter .beat.stats { display: flex; gap: 120px; }
+.chapter .beat.stats { display: flex; }
+.chapter .beat.stats > * + * { margin-left: 120px; } /* not flex gap: older TV browsers ignore it */
 .chapter .stat .value { font-family: "Fraunces", serif; font-weight: 400; font-size: 128px; line-height: 1; color: var(--accent); }
 .chapter .stat .value .sym { font-family: "Inter", sans-serif; font-weight: 300; font-size: 0.62em; vertical-align: 0.18em; margin: 0 0.04em; }
 .chapter .stat .label { margin-top: 18px; color: rgba(255, 255, 255, 0.78); }
@@ -96,7 +97,7 @@ html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--
 .saga .block .swap { display: grid; }
 .saga .block .swap > * { grid-area: 1 / 1; }
 .saga .dest-head { left: 192px; top: 200px; color: rgba(255, 255, 255, 0.86); }
-.saga .dests { left: 192px; right: 192px; top: 420px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 64px; color: var(--white); }
+.saga .dests { left: 192px; right: 192px; top: 420px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-gap: 64px; gap: 64px; color: var(--white); }
 .saga .dest .place { font-family: "Fraunces", serif; font-weight: 400; font-size: 104px; line-height: 1; }
 .saga .dest .line { font-family: "Inter", sans-serif; font-weight: 500; font-size: 44px; line-height: 1.2; margin-top: 22px; color: rgba(255, 255, 255, 0.9); text-wrap: balance; }
 .saga .dest .rule { width: 64px; height: 6px; background: var(--white); margin-bottom: 34px; }
@@ -142,8 +143,10 @@ html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--
 .haus .shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .haus .shot .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 16px; font-family: "Manrope", sans-serif; font-weight: 600; font-size: 20px; color: var(--white); background: rgba(0, 0, 0, 0.35); }
 .haus .next-head { left: 192px; top: 380px; }
-.haus .next { left: 192px; right: 192px; top: 470px; display: flex; gap: 200px; }
-.haus .city { display: flex; align-items: center; gap: 40px; }
+.haus .next { left: 192px; right: 192px; top: 470px; display: flex; }
+.haus .next > * + * { margin-left: 200px; }
+.haus .city { display: flex; align-items: center; }
+.haus .city > * + * { margin-left: 40px; }
 .haus .city .mark { overflow: hidden; }
 .haus .city .names { font-family: "Bricolage Grotesque", sans-serif; font-stretch: 75%; font-weight: 700; font-size: 84px; line-height: 1.05; text-transform: uppercase; }
 .haus .city .cname { font-family: "Manrope", sans-serif; font-weight: 600; font-size: 40px; color: var(--indigo); margin-bottom: 8px; text-transform: none; }
