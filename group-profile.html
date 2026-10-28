@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="build" content="20261027-1534-cb436607">
+<meta name="build" content="20261028-1624-cb436607">
 <title>505/506 DLF South Court</title>
 <style>
   /* The page the TV opens on GitHub Pages: a few KB, so it arrives even when GitHub is slow from
@@ -13,15 +13,15 @@
      Built by apps/build_player.py (the cdn variant); published by tools/publish_pages.py. */
   :root { --paper: #F4F1EA; --ink: #1A1714; }
   html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: var(--paper); cursor: none; }
-  .viewport { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--paper); }
+  .viewport { position: fixed; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: center; justify-content: center; background: var(--paper); }
   .frame { position: relative; flex: none; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
-  .base { position: absolute; inset: 0; z-index: 1; }
+  .base { position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 1; }
   .frame > .stage { z-index: 2; }
   .frame > .dress { z-index: 3; }
 </style>
 </head>
 <body>
-<div class="viewport"><div class="frame" id="frame"><div class="base" id="base"><div class="house" style="position:absolute;inset:0"><div style="position:absolute;left:808px;top:314px;width:304px;height:6px;background:var(--ink)"></div><div style="position:absolute;left:808px;top:760px;width:304px;height:6px;background:var(--ink)"></div><div style="position:absolute;left:838px;top:340px;width:40px;height:400px;background:#003366"></div><div style="position:absolute;left:906px;top:340px;width:40px;height:400px;background:#181818"></div><div style="position:absolute;left:974px;top:340px;width:40px;height:400px;background:#AA6847"></div><div style="position:absolute;left:1042px;top:340px;width:40px;height:400px;background:#5A0A2D"></div></div></div></div></div>
+<div class="viewport"><div class="frame" id="frame"><div class="base" id="base"><div class="house" style="position:absolute;top:0;right:0;bottom:0;left:0"><div style="position:absolute;left:808px;top:314px;width:304px;height:6px;background:var(--ink)"></div><div style="position:absolute;left:808px;top:760px;width:304px;height:6px;background:var(--ink)"></div><div style="position:absolute;left:838px;top:340px;width:40px;height:400px;background:#003366"></div><div style="position:absolute;left:906px;top:340px;width:40px;height:400px;background:#181818"></div><div style="position:absolute;left:974px;top:340px;width:40px;height:400px;background:#AA6847"></div><div style="position:absolute;left:1042px;top:340px;width:40px;height:400px;background:#5A0A2D"></div></div></div></div></div>
 <script>
 (function () {
   const frame = document.getElementById('frame');
@@ -29,16 +29,16 @@
   fit();
   addEventListener('resize', fit);
 
-  const BASES = ['https://cdn.jsdelivr.net/gh/garg94sahil/southcourt@b97e5005119883d7049d69820718b768b5ec496e/', ''];
-  const FILES = {"css": "assets/film/film.44e656fed119.css", "film": "assets/film/film.c6550b13164d.json", "scripts": ["assets/film/logo-data.fc3fbb40acab.js", "assets/film/kit.36ccb4c55e33.js", "assets/film/family-kit.619cd92cd45c.js", "assets/film/film-scenes.133e795776e4.js", "assets/film/player.2bae3baaa2b8.js"], "festivals": "assets/film/festivals.f6cd48a24923.json"};
+  const BASES = ['https://cdn.jsdelivr.net/gh/garg94sahil/southcourt@8b97f6c94f6a8a145653ca6653184bd9db0d2882/', ''];
+  const FILES = {"css": "assets/film/film.7ec60b868139.css", "film": "assets/film/film.fff472cc97fd.json", "scripts": ["assets/film/logo-data.fbb8f96448c7.js", "assets/film/kit.c17818585717.js", "assets/film/family-kit.7d50422c330a.js", "assets/film/film-scenes.385ae5a006fe.js", "assets/film/player.231c3e72b8d9.js"], "festivals": "assets/film/festivals.f6cd48a24923.json"};
   let base = null; // the source that answered first; images follow it
 
   async function get(path, json) {
     for (const b of BASES) {
-      const ctl = new AbortController();
-      const timer = setTimeout(() => ctl.abort(), b ? 30000 : 900000);
+      const ctl = typeof AbortController === 'function' ? new AbortController() : null; // Chrome 66+
+      const timer = ctl ? setTimeout(() => ctl.abort(), b ? 30000 : 900000) : 0;
       try {
-        const r = await fetch(b + path, { signal: ctl.signal });
+        const r = await fetch(b + path, ctl ? { signal: ctl.signal } : {});
         if (r.ok) {
           const body = json ? await r.json() : await r.text();
           if (base === null) base = b;
