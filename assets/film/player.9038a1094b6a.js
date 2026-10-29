@@ -26,10 +26,12 @@ var __spreadValues = (a, b) => {
     requestAnimationFrame(step);
   });
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const VERSION_URL = window.FILM_VERSION_URL || "version.txt";
+  const CAN_CHECK = /^https?:/.test(VERSION_URL) || location.protocol.indexOf("http") === 0;
   let updateWaiting = false, skew = 0;
   const checkVersion = async () => {
     try {
-      const r = await fetch("version.txt?ts=" + Date.now(), { cache: "no-store" });
+      const r = await fetch(VERSION_URL + "?ts=" + Date.now(), { cache: "no-store" });
       const server = Date.parse(r.headers.get("Date") || "");
       if (server) skew = Math.abs(server - Date.now()) > 5 * 6e4 ? server - Date.now() : 0;
       if (!r.ok) return;
@@ -38,7 +40,7 @@ var __spreadValues = (a, b) => {
     } catch (e) {
     }
   };
-  if (location.protocol.startsWith("http")) {
+  if (CAN_CHECK) {
     checkVersion();
     setInterval(checkVersion, 30 * 6e4);
   }
@@ -85,9 +87,9 @@ var __spreadValues = (a, b) => {
     mark("end", s.id);
   }
   const online = async () => {
-    if (!location.protocol.startsWith("http")) return true;
+    if (!CAN_CHECK) return true;
     try {
-      return (await fetch("version.txt?ts=" + Date.now(), { cache: "no-store" })).ok;
+      return (await fetch(VERSION_URL + "?ts=" + Date.now(), { cache: "no-store" })).ok;
     } catch (e) {
       return false;
     }
