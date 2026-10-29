@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="build" content="20261028-1624-cb436607">
+<meta name="build" content="20261029-1554-cb436607">
 <title>505/506 DLF South Court</title>
 <style>
   /* The page the TV opens on GitHub Pages: a few KB, so it arrives even when GitHub is slow from
@@ -29,39 +29,68 @@
   fit();
   addEventListener('resize', fit);
 
-  const BASES = ['https://cdn.jsdelivr.net/gh/garg94sahil/southcourt@8b97f6c94f6a8a145653ca6653184bd9db0d2882/', ''];
-  const FILES = {"css": "assets/film/film.7ec60b868139.css", "film": "assets/film/film.fff472cc97fd.json", "scripts": ["assets/film/logo-data.fbb8f96448c7.js", "assets/film/kit.c17818585717.js", "assets/film/family-kit.7d50422c330a.js", "assets/film/film-scenes.385ae5a006fe.js", "assets/film/player.231c3e72b8d9.js"], "festivals": "assets/film/festivals.f6cd48a24923.json"};
+  // CFG.pin: the build this page was made with ({build, commit, files}; commit filled in by publish).
+  // CFG.pointer: where to read the current build first (the AbleSign loader: current.json on GitHub
+  // Pages), so the loader never needs re-uploading; null on GitHub Pages itself.
+  // CFG.site: GitHub Pages ('' on GitHub Pages itself): the fallback source and version.txt.
+  const CFG = {"pin": {"build": "20261029-1554-cb436607", "commit": "c60ac4689bfb236fe168b2470b7d9ea3069a960a", "files": {"css": "assets/film/film.7ec60b868139.css", "film": "assets/film/film.19eeb9804ac6.json", "scripts": ["assets/film/logo-data.fbb8f96448c7.js", "assets/film/kit.c17818585717.js", "assets/film/family-kit.7d50422c330a.js", "assets/film/film-scenes.385ae5a006fe.js", "assets/film/player.9038a1094b6a.js"], "festivals": "assets/film/festivals.f6cd48a24923.json"}}, "pointer": null, "site": ""};
+  const MIRROR = 'https://cdn.jsdelivr.net/gh/garg94sahil/southcourt@';
+  let BASES = [], FILES = null;
   let base = null; // the source that answered first; images follow it
 
+  const within = async (url, ms, opts) => {
+    const ctl = typeof AbortController === 'function' ? new AbortController() : null; // Chrome 66+
+    const timer = ctl ? setTimeout(() => ctl.abort(), ms) : 0;
+    try { return await fetch(url, Object.assign(ctl ? { signal: ctl.signal } : {}, opts || {})); } finally { clearTimeout(timer); }
+  };
   async function get(path, json) {
     for (const b of BASES) {
-      const ctl = typeof AbortController === 'function' ? new AbortController() : null; // Chrome 66+
-      const timer = ctl ? setTimeout(() => ctl.abort(), b ? 30000 : 900000) : 0;
       try {
-        const r = await fetch(b + path, ctl ? { signal: ctl.signal } : {});
+        const r = await within(b + path, b === BASES[0] ? 30000 : 900000);
         if (r.ok) {
           const body = json ? await r.json() : await r.text();
           if (base === null) base = b;
           return body;
         }
-      } catch (e) { /* try the next source */ } finally { clearTimeout(timer); }
+      } catch (e) { /* try the next source */ }
     }
     throw new Error('could not load ' + path);
   }
-  const rebase = (node) => JSON.parse(JSON.stringify(node), (k, v) => (k === 'src' && typeof v === 'string' && v.startsWith('assets/') ? base + v : v));
+  const rebase = (node) => JSON.parse(JSON.stringify(node), (k, v) => (k === 'src' && typeof v === 'string' && v.indexOf('assets/') === 0 ? base + v : v));
   const run = (code) => { const s = document.createElement('script'); s.textContent = code; document.body.append(s); };
+
+  // Which build to play: the pointer's (if any, and if it answers), else the one built in
+  async function choose() {
+    let pin = CFG.pin;
+    if (CFG.pointer) {
+      try {
+        const r = await within(CFG.pointer + '?ts=' + Date.now(), 20000, { cache: 'no-store' });
+        const p = r.ok ? await r.json() : null;
+        if (p && p.build && p.commit && p.files) pin = p;
+      } catch (e) { /* keep the built-in build */ }
+    }
+    document.querySelector('meta[name="build"]').content = pin.build;
+    window.FILM_VERSION_URL = CFG.site + 'version.txt'; // the player checks it for new builds
+    BASES = [MIRROR + pin.commit + '/', CFG.site];
+    FILES = pin.files;
+  }
 
   // In order: fonts, the film, its code (the film starts as soon as the player runs), the festivals.
   // A step that fails is retried a minute later; the house stays on screen meanwhile.
-  const steps = [
-    async () => { const css = await get(FILES.css); const st = document.createElement('style'); st.textContent = css.split('__BASE__').join(base + 'assets/film/'); document.head.append(st); },
-    async () => { window.FILM = rebase(await get(FILES.film, true)); },
-    ...FILES.scripts.map((f) => async () => run(await get(f))),
-    async () => { window.FILM_WISHES = rebase(await get(FILES.festivals, true)); },
-  ];
-  let done = 0;
+  let steps = null, done = 0;
   (async function boot() {
-    try { for (; done < steps.length; done++) await steps[done](); } catch (e) { setTimeout(boot, 60000); }
+    try {
+      if (!steps) {
+        await choose();
+        steps = [
+          async () => { const css = await get(FILES.css); const st = document.createElement('style'); st.textContent = css.split('__BASE__').join(base + 'assets/film/'); document.head.append(st); },
+          async () => { window.FILM = rebase(await get(FILES.film, true)); },
+        ].concat(FILES.scripts.map((f) => async () => run(await get(f))), [
+          async () => { window.FILM_WISHES = rebase(await get(FILES.festivals, true)); },
+        ]);
+      }
+      for (; done < steps.length; done++) await steps[done]();
+    } catch (e) { setTimeout(boot, 60000); }
   })();
 })();
 </script>
