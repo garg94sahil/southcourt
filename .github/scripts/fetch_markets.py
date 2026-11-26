@@ -32,7 +32,10 @@ from pathlib import Path
 
 IST = dt.timezone(dt.timedelta(hours=5, minutes=30))
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
-CHART = "https://query1.finance.yahoo.com/v8/finance/chart/{sym}?range=1d&interval=5m"
+# Daily bars for a month: the previous close is read from them (see quote()), never from Yahoo's
+# chartPreviousClose. On 2026-11-26, after the 24 Nov market holiday, chartPreviousClose jumped back
+# to Monday's close in the afternoon and the tape showed NIFTY +2.17% for a +0.3% day.
+CHART = "https://query1.finance.yahoo.com/v8/finance/chart/{sym}?range=1mo&interval=1d"
 
 # id -> what the tape shows. `kind` index = an equity index: the tape's "as of" time follows these.
 INSTRUMENTS = [
@@ -55,8 +58,17 @@ def quote(sym, tries=3):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
             with urllib.request.urlopen(req, timeout=20) as r:
-                meta = json.load(r)["chart"]["result"][0]["meta"]
-            return float(meta["regularMarketPrice"]), float(meta["chartPreviousClose"]), int(meta["regularMarketTime"])
+                res = json.load(r)["chart"]["result"][0]
+            meta = res["meta"]
+            price, t, off = float(meta["regularMarketPrice"]), int(meta["regularMarketTime"]), int(meta.get("gmtoffset") or 0)
+            # The previous close: the last daily close dated before the trading day of the latest
+            # price, both in the exchange's own time zone (so holidays and weekends are skipped)
+            day = lambda ts: dt.datetime.fromtimestamp(ts + off, dt.timezone.utc).date()
+            today = day(t)
+            prev = [c for ts, c in zip(res["timestamp"], res["indicators"]["quote"][0]["close"]) if c is not None and day(ts) < today]
+            if not prev:
+                raise ValueError("no daily close before " + today.isoformat())
+            return price, float(prev[-1]), t
         except Exception as e:  # HTTP 429/5xx, timeouts, odd JSON
             last = e
             time.sleep(2 * (k + 1))
