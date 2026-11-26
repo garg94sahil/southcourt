@@ -117,7 +117,8 @@
       h.querySelectorAll(".line").forEach((ln, k) => HK.rise(ln, tin + 350 + k * 160, out + k * 60));
     }
     const nLines = (s.headline || []).length;
-    const beatTop = 330 + nLines * 160 + (nLines > 1 ? 70 : 140);
+    const tape = tapeOf(s.ticker);
+    const beatTop = 330 + nLines * 160 + (nLines > 1 ? 70 : 140) - (tape ? 40 : 0);
     const beats = (s.beats || []).filter((b) => b.type === "line" ? b.text : (b.items || []).length);
     const times = slices(tin + 2100, out, beats.length || 1);
     beats.forEach((b, k) => {
@@ -143,14 +144,91 @@
         });
       }
     });
-    if (s.motif === "mountains") mountains(r, tin + 600, out);
+    if (s.motif === "mountains") mountains(r, tin + 600, out, tape ? 40 : 0);
+    if (tape) ticker(r, s.ticker, tape, tin, out);
     return disposer(root);
   }
-  function mountains(r, tin, out) {
+  const TAPE_SPEED = 160;
+  function tapeOf(tk) {
+    if (!tk || !tk.data || !tk.data.items) return null;
+    const byId = {};
+    tk.data.items.forEach((i) => {
+      byId[i.id] = i;
+    });
+    const items = (tk.items || []).map((id) => byId[id]).filter(Boolean);
+    if (items.length < 2) return null;
+    const when = tapeWhen(tk, items);
+    if (!when) return null;
+    const k = (tk.data.start || 0) % items.length;
+    return { items: items.slice(k).concat(items.slice(0, k)), when };
+  }
+  const grouped = (v, dec) => {
+    const parts = Math.abs(v).toFixed(dec).split(".");
+    const i = parts[0], last3 = i.slice(-3), rest = i.slice(0, -3);
+    return (rest ? rest.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + "," + last3 : last3) + (parts[1] ? "." + parts[1] : "");
+  };
+  const istParts = (ms) => {
+    const d = new Date(ms + 330 * 6e4);
+    return { day: d.toISOString().slice(0, 10), dow: d.getUTCDay(), mins: d.getUTCHours() * 60 + d.getUTCMinutes(), h: d.getUTCHours(), m: d.getUTCMinutes(), date: d.getUTCDate(), month: d.getUTCMonth() };
+  };
+  const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function tapeWhen(tk, items) {
+    const idx = items.filter((i) => i.kind === "index");
+    const a = istParts(Math.min.apply(null, (idx.length ? idx : items).map((i) => i.t * 1e3)));
+    const n = istParts(tk.data.now);
+    const time = () => {
+      const h = a.h % 12 || 12;
+      return tk.live.replace("[time]", "".concat(h, ":").concat(a.m < 10 ? "0" : "").concat(a.m, " ").concat(a.h < 12 ? "AM" : "PM"));
+    };
+    const open = n.dow >= 1 && n.dow <= 5 && n.mins >= 555 && n.mins <= 945 && a.day === n.day;
+    if (open && a.mins < 930) return time();
+    if (a.mins >= 925) return tk.closed.replace("[date]", "".concat(a.date, " ").concat(MONTHS[a.month]));
+    return tk.data.sample ? time() : null;
+  }
+  function ticker(r, tk, t, tin, out) {
+    const NS = "http://www.w3.org/2000/svg";
+    const items = t.items;
+    const tape = abs("ticker");
+    const head = el("div", "label tk-head", tk.label || "");
+    head.append(el("span", "tk-when", "".concat(tk.label ? " \xB7 " : "").concat(t.when).concat(tk.data.sample ? " \xB7 Sample" : "")));
+    const win = el("div", "tk-window");
+    const strip = el("div", "tk-strip");
+    const reps = Math.max(2, Math.ceil(12 / items.length));
+    for (let k = 0; k < reps; k++) {
+      items.forEach((i) => {
+        const it = el("span", "tk-item");
+        it.append(el("span", "tk-name", i.name), el("span", "tk-val", grouped(i.value, i.decimals == null ? 2 : i.decimals)));
+        const dir = i.change_pct > 0 ? "up" : i.change_pct < 0 ? "down" : "flat";
+        const chg = el("span", "tk-chg " + dir);
+        if (dir !== "flat") {
+          const svg = document.createElementNS(NS, "svg");
+          svg.setAttribute("viewBox", "0 0 18 14");
+          const tri = document.createElementNS(NS, "path");
+          tri.setAttribute("d", dir === "up" ? "M0 14 L9 0 L18 14 Z" : "M0 0 L18 0 L9 14 Z");
+          svg.append(tri);
+          chg.append(svg);
+        }
+        chg.append(document.createTextNode(Math.abs(i.change_pct).toFixed(2) + "%"));
+        it.append(chg);
+        strip.append(it);
+      });
+    }
+    win.append(strip, el("div", "tk-fade l"), el("div", "tk-fade r"));
+    tape.append(head, win);
+    r.append(tape);
+    HK.rise(tape, tin, out, { dist: 24 });
+    const end = out + 550;
+    HK.track(strip, [
+      { t: 0, transform: "translateX(0px)" },
+      { t: tin, transform: "translateX(0px)", ease: "linear" },
+      { t: end, transform: "translateX(".concat(-Math.round(TAPE_SPEED * (end - tin) / 1e3), "px)") }
+    ]);
+  }
+  function mountains(r, tin, out, lift = 0) {
     const NS = "http://www.w3.org/2000/svg";
     const wrap = abs("motif");
     wrap.style.right = "192px";
-    wrap.style.bottom = "192px";
+    wrap.style.bottom = 192 + lift + "px";
     const svg = document.createElementNS(NS, "svg");
     svg.setAttribute("viewBox", "0 0 480 200");
     svg.setAttribute("width", "480");
