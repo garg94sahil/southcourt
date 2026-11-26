@@ -1,0 +1,64 @@
+# Market levels for the Endurance chapter's ticker on the South Court reception TV.
+#
+# Source of truth: deploy/github/markets.yml in the reception project. tools/publish_pages.py copies it
+# here (.github/workflows/markets.yml) and the fetcher to .github/scripts/fetch_markets.py. Do not
+# edit either copy in this repo; edit the project and publish again.
+#
+# Every 10 minutes on weekdays, 08:30-16:20 IST (03:00-10:50 UTC), which covers NSE/BSE hours and the
+# close. It fetches six levels (tools/fetch_markets.py, standard library only) and force-pushes them
+# as one commit holding only markets.json to branch `live-data`. History never grows; master,
+# film-files and the Pages build are untouched. The TV reads
+#   https://raw.githubusercontent.com/garg94sahil/southcourt/live-data/markets.json
+# and hides the tape when the file is missing or older than 96 hours.
+#
+# A run fails (and GitHub emails the repo owner) only when no equity index came back; the last good
+# file then stays in place.
+name: markets
+
+on:
+  schedule:
+    - cron: "*/10 3-10 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write   # only for the keep-enabled step below
+
+concurrency:
+  group: markets
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Get the fetcher only (master carries large old assets)
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+
+      - name: Fetch levels
+        run: python3 .github/scripts/fetch_markets.py --out "$RUNNER_TEMP/live/markets.json"
+
+      - name: Replace branch live-data with one commit holding markets.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd "$RUNNER_TEMP/live"
+          git init -q -b live-data
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add markets.json
+          git commit -q -m "Market levels $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:refs/heads/live-data
+          echo "live-data now holds $(git rev-parse --short HEAD)"
+
+      # GitHub disables scheduled jobs in a public repo after 60 days without repository activity.
+      # Enabling an enabled workflow is a no-op that counts as activity. It never fails the run.
+      - name: Keep this job enabled
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh api -X PUT "repos/${GITHUB_REPOSITORY}/actions/workflows/markets.yml/enable" --silent

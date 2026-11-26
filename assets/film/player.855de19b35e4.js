@@ -60,6 +60,34 @@ var __spreadValues = (a, b) => {
     const lit = d >= x.day ? 9 : Math.max(1, Math.min(9, dayNo(d) - dayNo(x.first || x.from) + 1));
     return { scene, dress: w.dress, opts: { lit } };
   }
+  const QUERY = new URLSearchParams(location.search);
+  const tickerOf = M.scenes.filter((s) => s.ticker).map((s) => s.ticker)[0];
+  let markets = null;
+  const goodMarkets = (d) => !!(d && d.items && d.items.length) && d.items.every((i) => i && typeof i.id === "string" && typeof i.name === "string" && typeof i.value === "number" && isFinite(i.value) && typeof i.change_pct === "number" && isFinite(i.change_pct) && typeof i.t === "number");
+  const refreshMarkets = async () => {
+    try {
+      const r = await Promise.race([fetch(tickerOf.url, { cache: "no-store" }), sleep(8e3).then(() => null)]);
+      if (!r || !r.ok) return;
+      const d = await r.json();
+      if (goodMarkets(d)) markets = d;
+    } catch (e) {
+    }
+  };
+  if (tickerOf) {
+    refreshMarkets();
+    setInterval(refreshMarkets, 5 * 6e4);
+  }
+  let pass = 0;
+  function withMarkets(s) {
+    const now = Date.now() + skew, start = 3 * pass++;
+    let data = null;
+    if (markets && now - Math.max.apply(null, markets.items.map((i) => i.t * 1e3)) <= s.ticker.max_age_hours * 36e5) {
+      data = { items: markets.items, now, start };
+    } else if (M.markets_sample && !QUERY.has("nosample")) {
+      data = { items: M.markets_sample.items, now: Date.parse(M.markets_sample.fetched), start, sample: true };
+    }
+    return Object.assign({}, s, { ticker: Object.assign({}, s.ticker, { data }) });
+  }
   let dressEl = null, dressKey = null;
   function dress(kind, opts = {}) {
     const key = kind ? kind + ":" + (kind === "navratri" ? opts.lit : "") : null;
@@ -117,7 +145,15 @@ var __spreadValues = (a, b) => {
       });
     }
     window.FILM_PLAN = plan.map((s) => s.id);
-    for (const s of plan) {
+    for (const s0 of plan) {
+      let s = s0;
+      if (s.ticker) {
+        try {
+          s = withMarkets(s);
+        } catch (e) {
+          mark("error", "markets: ".concat(e));
+        }
+      }
       try {
         await playScene(s);
       } catch (e) {

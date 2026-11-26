@@ -84,6 +84,24 @@ html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--
 .chapter .stat .label { margin-top: 18px; color: rgba(255, 255, 255, 0.78); }
 .chapter .motif { right: 96px; bottom: 96px; }
 .chapter .motif svg { display: block; overflow: visible; }
+/* Live market tape (Endurance): along the room's bottom edge; fixed label left, levels scroll.
+   --tape is the Endurance room lifted 5% (the fades must match it). Rises and falls: muted green/red. */
+.chapter .ticker { --tape: #242424; left: 96px; top: 912px; width: 1728px; height: 72px; display: flex; background: var(--tape); border-top: 2px solid rgba(144, 144, 144, 0.35); }
+.ticker .tk-head { flex: none; padding: 0 36px 0 96px; line-height: 70px; color: var(--accent); white-space: nowrap; border-right: 2px solid rgba(144, 144, 144, 0.35); }
+.ticker .tk-when { color: rgba(255, 255, 255, 0.78); }
+.ticker .tk-window { position: relative; flex: 1 1 auto; overflow: hidden; }
+.ticker .tk-strip { position: absolute; left: 0; top: 0; height: 70px; white-space: nowrap; line-height: 70px; will-change: transform; }
+.ticker .tk-item { display: inline-block; padding: 0 44px; border-left: 2px solid rgba(144, 144, 144, 0.3); }
+.ticker .tk-name { font-family: "Inter", sans-serif; font-weight: 600; font-size: 30px; letter-spacing: 0.06em; color: rgba(255, 255, 255, 0.72); }
+.ticker .tk-val { font-family: "Inter", sans-serif; font-weight: 500; font-size: 36px; font-variant-numeric: tabular-nums; color: var(--white); margin-left: 20px; }
+.ticker .tk-chg { font-family: "Inter", sans-serif; font-weight: 600; font-size: 32px; font-variant-numeric: tabular-nums; margin-left: 18px; }
+.ticker .tk-chg svg { width: 18px; height: 14px; margin-right: 8px; vertical-align: 3px; fill: currentColor; }
+.ticker .tk-chg.up { color: #74C69D; }
+.ticker .tk-chg.down { color: #F08080; }
+.ticker .tk-chg.flat { color: rgba(255, 255, 255, 0.6); }
+.ticker .tk-fade { position: absolute; top: 0; bottom: 0; width: 72px; }
+.ticker .tk-fade.l { left: 0; background: linear-gradient(to right, var(--tape), rgba(36, 36, 36, 0)); }
+.ticker .tk-fade.r { right: 0; background: linear-gradient(to left, var(--tape), rgba(36, 36, 36, 0)); }
 
 /* ---------------- Saga Hotels: Calangute renders, then destinations ---------------- */
 .saga .photo { position: absolute; left: 96px; top: 96px; width: 1728px; height: 888px; overflow: hidden; }
