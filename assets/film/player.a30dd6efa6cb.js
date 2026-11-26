@@ -82,9 +82,10 @@ var __spreadValues = (a, b) => {
     const now = Date.now() + skew, start = 3 * pass++;
     let data = null;
     if (markets && now - Math.max.apply(null, markets.items.map((i) => i.t * 1e3)) <= s.ticker.max_age_hours * 36e5) {
-      data = { items: markets.items, now, start };
+      data = { items: markets.items, now, fetched: Date.parse(markets.fetched), start };
     } else if (M.markets_sample && !QUERY.has("nosample")) {
-      data = { items: M.markets_sample.items, now: Date.parse(M.markets_sample.fetched), start, sample: true };
+      const at = Date.parse(M.markets_sample.fetched);
+      data = { items: M.markets_sample.items, now: at, fetched: at, start, sample: true };
     }
     return Object.assign({}, s, { ticker: Object.assign({}, s.ticker, { data }) });
   }

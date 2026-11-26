@@ -157,10 +157,9 @@
     });
     const items = (tk.items || []).map((id) => byId[id]).filter(Boolean);
     if (items.length < 2) return null;
-    const when = tapeWhen(tk, items);
-    if (!when) return null;
+    if (!fresh(tk, items)) return null;
     const k = (tk.data.start || 0) % items.length;
-    return { items: items.slice(k).concat(items.slice(0, k)), when };
+    return { items: items.slice(k).concat(items.slice(0, k)) };
   }
   const grouped = (v, dec) => {
     const parts = Math.abs(v).toFixed(dec).split(".");
@@ -171,26 +170,19 @@
     const d = new Date(ms + 330 * 6e4);
     return { day: d.toISOString().slice(0, 10), dow: d.getUTCDay(), mins: d.getUTCHours() * 60 + d.getUTCMinutes(), h: d.getUTCHours(), m: d.getUTCMinutes(), date: d.getUTCDate(), month: d.getUTCMonth() };
   };
-  const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  function tapeWhen(tk, items) {
-    const idx = items.filter((i) => i.kind === "index");
-    const a = istParts(Math.min.apply(null, (idx.length ? idx : items).map((i) => i.t * 1e3)));
+  function fresh(tk, items) {
+    if (tk.data.sample) return true;
     const n = istParts(tk.data.now);
-    const time = () => {
-      const h = a.h % 12 || 12;
-      return tk.live.replace("[time]", "".concat(h, ":").concat(a.m < 10 ? "0" : "").concat(a.m, " ").concat(a.h < 12 ? "AM" : "PM"));
-    };
-    const open = n.dow >= 1 && n.dow <= 5 && n.mins >= 555 && n.mins <= 945 && a.day === n.day;
-    if (open && a.mins < 930) return time();
-    if (a.mins >= 925) return tk.closed.replace("[date]", "".concat(a.date, " ").concat(MONTHS[a.month]));
-    return tk.data.sample ? time() : null;
+    const session = n.dow >= 1 && n.dow <= 5 && n.mins >= 555 && n.mins <= 945;
+    if (session) return !!tk.data.fetched && tk.data.now - tk.data.fetched <= (tk.fresh_minutes || 60) * 6e4;
+    const idx = items.filter((i) => i.kind === "index");
+    return istParts(Math.min.apply(null, (idx.length ? idx : items).map((i) => i.t * 1e3))).mins >= 925;
   }
   function ticker(r, tk, t, tin, out) {
     const NS = "http://www.w3.org/2000/svg";
     const items = t.items;
     const tape = abs("ticker");
-    const head = el("div", "label tk-head", tk.label || "");
-    head.append(el("span", "tk-when", "".concat(tk.label ? " \xB7 " : "").concat(t.when).concat(tk.data.sample ? " \xB7 Sample" : "")));
+    const head = tk.data.sample ? el("div", "label tk-head", "Sample") : null;
     const win = el("div", "tk-window");
     const strip = el("div", "tk-strip");
     const reps = Math.max(2, Math.ceil(12 / items.length));
@@ -214,7 +206,8 @@
       });
     }
     win.append(strip, el("div", "tk-fade l"), el("div", "tk-fade r"));
-    tape.append(head, win);
+    if (head) tape.append(head);
+    tape.append(win);
     r.append(tape);
     HK.rise(tape, tin, out, { dist: 24 });
     const end = out + 550;
