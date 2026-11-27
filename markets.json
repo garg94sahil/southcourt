@@ -1,0 +1,67 @@
+{
+ "v": 1,
+ "fetched": "2026-11-27T17:17:19+05:30",
+ "source": "Yahoo Finance (delayed)",
+ "items": [
+  {
+   "id": "nifty50",
+   "name": "NIFTY 50",
+   "kind": "index",
+   "value": 25607.2,
+   "decimals": 2,
+   "change_pct": -1.07,
+   "t": 1795773697,
+   "time": "2026-11-27T15:31:37+05:30"
+  },
+  {
+   "id": "sensex",
+   "name": "SENSEX",
+   "kind": "index",
+   "value": 83339.26,
+   "decimals": 2,
+   "change_pct": -1.17,
+   "t": 1795773745,
+   "time": "2026-11-27T15:32:25+05:30"
+  },
+  {
+   "id": "niftybank",
+   "name": "NIFTY BANK",
+   "kind": "index",
+   "value": 63040.9,
+   "decimals": 2,
+   "change_pct": -0.78,
+   "t": 1795773697,
+   "time": "2026-11-27T15:31:37+05:30"
+  },
+  {
+   "id": "midcap150",
+   "name": "NIFTY MIDCAP 150",
+   "kind": "index",
+   "value": 22652.7,
+   "decimals": 2,
+   "change_pct": 0.01,
+   "t": 1795773697,
+   "time": "2026-11-27T15:31:37+05:30"
+  },
+  {
+   "id": "usdinr",
+   "name": "USD/INR",
+   "kind": "fx",
+   "value": 92.98,
+   "decimals": 2,
+   "change_pct": 0.8,
+   "t": 1795773922,
+   "time": "2026-11-27T15:35:22+05:30"
+  },
+  {
+   "id": "gold",
+   "name": "GOLD (US$/OZ)",
+   "kind": "commodity",
+   "value": 3704.4,
+   "decimals": 1,
+   "change_pct": 4.77,
+   "t": 1795779436,
+   "time": "2026-11-27T17:07:16+05:30"
+  }
+ ]
+}
