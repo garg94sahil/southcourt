@@ -11,8 +11,9 @@ Standard library only, so it runs on a bare Actions runner as well as here.
 What it shows (Sahil, 2026-11-26): broad Indian indices, the rupee and gold. Never single stocks,
 Endurance's holdings or any performance figure: Endurance is a SEBI AIF.
 
-Source: Yahoo Finance's chart endpoint (unofficial, about 15 minutes delayed for NSE/BSE). If Yahoo
-starts refusing the Actions runners, swap `quote()` for another source; the file format stays.
+Source: Yahoo Finance's chart endpoint (unofficial, about 15 minutes delayed for BSE). The % change
+is against the last daily close before the latest price's trading day, read from the daily bars.
+If Yahoo starts refusing the Actions runners, swap `quote()` for another source; the file format stays.
 
 Usage:
   python tools/fetch_markets.py                                  # -> .tmp/markets.json
