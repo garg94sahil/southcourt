@@ -170,11 +170,22 @@
     const d = new Date(ms + 330 * 6e4);
     return { day: d.toISOString().slice(0, 10), dow: d.getUTCDay(), mins: d.getUTCHours() * 60 + d.getUTCMinutes(), h: d.getUTCHours(), m: d.getUTCMinutes(), date: d.getUTCDate(), month: d.getUTCMonth() };
   };
+  const lastCloseMs = (now) => {
+    const IST = 330 * 6e4;
+    const d = new Date(now + IST);
+    d.setUTCHours(15, 35, 0, 0);
+    let t = d.getTime() - IST;
+    while (t > now || [0, 6].indexOf(new Date(t + IST).getUTCDay()) >= 0) t -= 864e5;
+    return t;
+  };
   function fresh(tk, items) {
     if (tk.data.sample) return true;
-    const n = istParts(tk.data.now);
+    const now = tk.data.now, fetched = tk.data.fetched;
+    if (!fetched) return false;
+    const n = istParts(now);
     const session = n.dow >= 1 && n.dow <= 5 && n.mins >= 555 && n.mins <= 945;
-    if (session) return !!tk.data.fetched && tk.data.now - tk.data.fetched <= (tk.fresh_minutes || 60) * 6e4;
+    if (session) return now - fetched <= (tk.fresh_minutes || 60) * 6e4;
+    if (fetched < lastCloseMs(now)) return false;
     const idx = items.filter((i) => i.kind === "index");
     return istParts(Math.min.apply(null, (idx.length ? idx : items).map((i) => i.t * 1e3))).mins >= 925;
   }
